@@ -10,8 +10,9 @@
         body { font-family: 'Nanum Gothic', sans-serif; background-color: var(--bg); margin: 0; padding: 8px; display: flex; justify-content: center; }
         .container { width: 100%; max-width: 450px; background: white; padding: 12px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
         .user-section { text-align: center; margin-bottom: 8px; }
-        #userName { border: none; border-bottom: 2px solid var(--primary); font-size: 14px; text-align: center; outline: none; width: 70px; background: transparent; }
-        h2 { color: #333; margin: 4px 0; font-size: 17px; }
+        /* 이름 입력란 삭제에 따른 스타일 수정 */
+        h2 { color: #333; margin: 10px 0; font-size: 17px; }
+        #nameTrigger { cursor: pointer; user-select: none; }
         .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
         .dash-box { background: #fff; padding: 8px; border-radius: 12px; border: 1px solid #eee; text-align: center; cursor: pointer; user-select: none; }
         .dash-box.bank { border: 2px solid var(--bank); background: #fffdf5; }
@@ -49,8 +50,7 @@
 <div id="customModal"><div class="modal-content" id="modalBody"></div></div>
 <div class="container">
     <div class="user-section">
-        <input type="text" id="userName" placeholder="이름" oninput="saveName()">
-        <h2 id="appTitle">비밀 금고 💰</h2>
+        <h2 id="appTitle">비밀 금고 <span id="nameTrigger" ontouchstart="startNameTimer()" ontouchend="endNameTimer()" onmousedown="startNameTimer()" onmouseup="endNameTimer()">💰</span></h2>
     </div>
     <div class="dashboard">
         <div class="dash-box bank" ontouchstart="startTimer()" ontouchend="endTimer()" onmousedown="startTimer()" onmouseup="endTimer()">
@@ -97,7 +97,7 @@
 <script>
     let records = JSON.parse(localStorage.getItem('moneyRecords')) || [];
     let viewDate = new Date();
-    let timer;
+    let timer, nameTimer;
 
     function getBalances() {
         let wallet = 0, bank = 0;
@@ -119,6 +119,19 @@
         document.getElementById('customModal').style.display = 'flex';
     }
     function closeModal() { document.getElementById('customModal').style.display = 'none'; }
+
+    // 이름 변경용 타이머
+    function startNameTimer() {
+        nameTimer = setTimeout(() => {
+            const currentName = localStorage.getItem('childName') || "";
+            const newName = prompt("금고 주인의 이름을 입력하세요:", currentName);
+            if (newName !== null) {
+                localStorage.setItem('childName', newName);
+                render();
+            }
+        }, 3000); // 3초
+    }
+    function endNameTimer() { clearTimeout(nameTimer); }
 
     function startTimer() {
         timer = setTimeout(() => {
@@ -146,7 +159,6 @@
                 records.push({ id: Date.now(), date: today, type: 'direct_in', memo: '금고에 바로 저금', amount: val });
             }
             saveAndRender();
-            // 금고 관리 후에도 현재 날짜 상세창이 열려있다면 새로고침
             showDetail(today);
         }, 100);
     }
@@ -165,14 +177,8 @@
         }
 
         records.push({ id: Date.now(), date, type, memo, amount });
-        
-        // 1. 데이터 저장 및 전체 화면(달력/대시보드) 갱신
         saveAndRender();
-        
-        // 2. 하단 상세 내역 리스트 즉시 갱신
         showDetail(date);
-        
-        // 3. 입력란 초기화
         document.getElementById('memo').value = ""; 
         document.getElementById('amount').value = "";
     }
@@ -214,7 +220,13 @@
 
     function render() {
         const name = localStorage.getItem('childName');
-        if(name) { document.getElementById('userName').value = name; document.getElementById('appTitle').innerText = name + "의 비밀 금고 💰"; }
+        const appTitle = document.getElementById('appTitle');
+        if(name) { 
+            appTitle.innerHTML = `${name}의 비밀 금고 <span id="nameTrigger" ontouchstart="startNameTimer()" ontouchend="endNameTimer()" onmousedown="startNameTimer()" onmouseup="endNameTimer()">💰</span>`;
+        } else {
+            appTitle.innerHTML = `비밀 금고 <span id="nameTrigger" ontouchstart="startNameTimer()" ontouchend="endNameTimer()" onmousedown="startNameTimer()" onmouseup="endNameTimer()">💰</span>`;
+        }
+        
         const year = viewDate.getFullYear(), month = viewDate.getMonth();
         document.getElementById('currentMonthStr').innerText = `${year}년 ${month + 1}월`;
         const first = new Date(year, month, 1).getDay(), last = new Date(year, month + 1, 0).getDate();
@@ -256,7 +268,6 @@
         document.getElementById('mTotalBnk').innerText = mBnk.toLocaleString() + "원";
     }
     document.getElementById('date').value = new Date().toISOString().split('T')[0];
-    function saveName() { localStorage.setItem('childName', document.getElementById('userName').value); render(); }
     window.onload = render;
 </script>
 </body>
