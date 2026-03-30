@@ -5,37 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>꿈나무 비밀 금고</title>
     <style>
-        :root { --primary: #4a90e2; --income: #2ecc71; --expense: #e74c3c; --bank: #f1c40f; --bg: #fdfbff; }
+        :root { --primary: #4a90e2; --income: #2ecc71; --expense: #e74c3c; --bank: #f1c40f; --bg: #fdfbff; --bank-text: #d4ac0d; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { font-family: 'Nanum Gothic', sans-serif; background-color: var(--bg); margin: 0; padding: 8px; display: flex; justify-content: center; }
         .container { width: 100%; max-width: 450px; background: white; padding: 12px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
         
-        /* 사용자 섹션 */
         .user-section { text-align: center; margin-bottom: 8px; }
         #nameInputZone { display: none; margin-bottom: 10px; background: #f0f4f8; padding: 10px; border-radius: 12px; }
         #userName { border: none; border-bottom: 2px solid var(--primary); font-size: 14px; text-align: center; outline: none; width: 80px; background: transparent; }
-        
         h2 { color: #333; margin: 4px 0; font-size: 17px; display: inline-block; vertical-align: middle; }
-        .money-trigger { cursor: pointer; user-select: none; font-size: 18px; vertical-align: middle; margin-left: 5px; }
+        .money-trigger { cursor: pointer; user-select: none; font-size: 18px; vertical-align: middle; }
 
         .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
-        .dash-box { background: #fff; padding: 10px; border-radius: 15px; border: 1px solid #eee; text-align: center; cursor: pointer; user-select: none; }
-        .dash-box.bank { border: 2px solid var(--bank); background: #fffdf5; }
-        .dash-box.wallet { border: 2px solid var(--primary); background: #f5faff; }
+        .dash-box { background: #fff; padding: 10px; border-radius: 15px; border: 1px solid #eee; text-align: center; cursor: pointer; }
+        .dash-box.bank { border: 2px solid var(--bank); }
+        .dash-box.wallet { border: 2px solid var(--primary); }
         .label { font-size: 10px; color: #666; display: block; margin-bottom: 2px; font-weight: bold; }
-        .value { font-weight: 800; font-size: 14px; display: block; }
-        .rate-info { font-size: 9px; color: #d4ac0d; margin-top: 3px; font-weight: bold; }
+        
+        /* 대시보드 글자 색상 변경 */
+        #bankBalance { color: var(--bank-text); font-weight: 800; font-size: 14px; }
+        #totalBalance { color: var(--primary); font-weight: 800; font-size: 14px; }
+        .rate-info { font-size: 9px; color: #d4ac0d; margin-top: 3px; }
 
-        /* 캘린더 헤더 (한 줄 유지) */
         .calendar-header { display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 8px; }
-        .calendar-header h3 { font-size: 14px; margin: 0; min-width: 100px; text-align: center; white-space: nowrap; }
-        .calendar-header button { width: 24px; height: 24px; padding: 0; font-size: 10px; background: #eee; border: none; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .calendar-header h3 { font-size: 14px; margin: 0; min-width: 100px; text-align: center; }
+        .calendar-header button { width: 24px; height: 24px; padding: 0; font-size: 10px; background: #eee; border: none; border-radius: 4px; cursor: pointer; }
         
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; border: 1px solid #eee; background: #eee; border-radius: 10px; overflow: hidden; }
         .day-head { background: #f1f1f1; padding: 4px; text-align: center; font-size: 9px; font-weight: bold; }
-        .day { background: white; min-height: 50px; padding: 2px; font-size: 8px; cursor: pointer; }
+        .day { background: white; min-height: 55px; padding: 2px; font-size: 8px; cursor: pointer; display: flex; flex-direction: column; }
         .day.today { background: #fff9e6; }
-        .day-num { font-weight: bold; color: #333; }
+        .day-num { font-weight: bold; color: #333; margin-bottom: 1px; }
+
+        /* 달력 내 금액 표시 */
+        .cal-amt { font-size: 7px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; line-height: 1.2; }
+        .cal-inc { color: var(--income); }
+        .cal-exp { color: var(--expense); }
+        .cal-bnk { color: var(--bank-text); }
 
         .input-group { background: #f8f9fa; padding: 12px; border-radius: 18px; border: 1px solid #eee; margin-top: 10px; }
         .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 6px; }
@@ -44,9 +50,14 @@
 
         .detail-view { margin-top: 10px; display: none; background: #fff; border: 1px solid #ddd; padding: 10px; border-radius: 15px; }
         .list-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #f5f5f5; font-size: 11px; }
+        
+        /* 상세 내역 태그 스타일 */
+        .tag { display: inline-block; padding: 2px 5px; border-radius: 4px; color: white; font-size: 9px; margin-right: 5px; font-weight: bold; }
+        .tag-exp { background: var(--expense); }
+        .tag-inc { background: var(--income); }
+        .tag-bnk { background: var(--bank-text); }
         .del-btn { background: #ffeded; color: #e74c3c; border: 1px solid #ffd1d1; padding: 2px 6px; font-size: 10px; border-radius: 4px; cursor: pointer; width: auto !important; margin-left: 8px; }
 
-        /* 모달 */
         #customModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
         .modal-content { background: white; padding: 20px; border-radius: 20px; width: 280px; text-align: center; }
         .bank-btn { padding: 12px; margin: 5px 0; width: 100%; border-radius: 10px; border: 1px solid #ddd; background: white; color: black; font-weight: bold; cursor: pointer; }
@@ -94,9 +105,9 @@
         <div class="input-row">
             <input type="date" id="date">
             <select id="type">
-                <option value="expense">📉 지출</option>
-                <option value="income">📈 수입</option>
-                <option value="tobank">🏦 금고로 저금</option>
+                <option value="expense">📉 (지출) 나간 돈</option>
+                <option value="income">📈 (수입) 들어온 돈</option>
+                <option value="tobank">🏦 (금고) 보관한 돈</option>
             </select>
         </div>
         <div class="input-row">
@@ -120,7 +131,7 @@
         timers[type] = setTimeout(() => {
             if(type === 'name') document.getElementById('nameInputZone').style.display = 'block';
             else openVaultMenu();
-        }, 3000); // 둘 다 3초로 통일
+        }, 3000);
     }
     function stopTimer(type) { clearTimeout(timers[type]); }
 
@@ -128,15 +139,13 @@
         const val = document.getElementById('userName').value;
         if(val) {
             settings.userName = val;
-            saveSettings();
-            render();
+            saveSettings(); render();
             document.getElementById('nameInputZone').style.display = 'none';
         }
     }
 
     function openVaultMenu() {
-        const html = `
-            <h3 style="font-size:16px;">🏦 금고 관리</h3>
+        const html = `<h3 style="font-size:16px;">🏦 금고 관리</h3>
             <button class="bank-btn" onclick="quickBank('direct_in')">입금</button>
             <button class="bank-btn" onclick="quickBank('withdraw')">출금</button>
             <div style="background:#f9f9f9; padding:10px; border-radius:10px; margin:10px 0;">
@@ -144,8 +153,7 @@
                 <input type="number" id="rateInput" value="${settings.interestRate}" step="0.1" style="margin-top:5px;">
                 <button onclick="updateRate()" style="background:#f39c12; margin-top:5px;">적용</button>
             </div>
-            <button onclick="closeModal()" style="background:#eee; color:#333;">닫기</button>
-        `;
+            <button onclick="closeModal()" style="background:#eee; color:#333;">닫기</button>`;
         showModal(html);
     }
 
@@ -163,12 +171,11 @@
                 const dailyRate = (settings.interestRate / 100) / 365;
                 const interest = Math.floor(bank * Math.pow((1 + dailyRate), diffDays) - bank);
                 if (interest > 0) {
-                    records.push({ id: Date.now(), date: new Date().toISOString().split('T')[0], type: 'direct_in', memo: '✨ 아빠 금고 이자', amount: interest });
+                    records.push({ id: Date.now(), date: new Date().toISOString().split('T')[0], type: 'direct_in', memo: '✨ 금고 이자', amount: interest });
                     localStorage.setItem('moneyRecords', JSON.stringify(records));
                 }
             }
-            settings.lastUpdate = now;
-            saveSettings();
+            settings.lastUpdate = now; saveSettings();
         }
     }
 
@@ -194,7 +201,7 @@
     }
 
     function deleteRecord(id, date) {
-        if(confirm("정말 삭제할까요?")) {
+        if(confirm("삭제할까요?")) {
             records = records.filter(r => r.id !== id);
             localStorage.setItem('moneyRecords', JSON.stringify(records));
             render(); showDetail(date);
@@ -214,7 +221,6 @@
     function render() {
         processInterest();
         document.getElementById('nameDisplay').innerText = settings.userName;
-        document.getElementById('userName').value = settings.userName;
         document.getElementById('rateDisplay').innerText = `연이율: ${settings.interestRate}%`;
         const { wallet, bank } = calculateBalances();
         document.getElementById('totalBalance').innerText = wallet.toLocaleString() + "원";
@@ -225,13 +231,29 @@
         const first = new Date(year, month, 1).getDay(), last = new Date(year, month + 1, 0).getDate();
         const cal = document.getElementById('calendar'); cal.innerHTML = "";
         ['일','월','화','수','목','금','토'].forEach(d => { const h=document.createElement('div'); h.className='day-head'; h.innerText=d; cal.appendChild(h); });
+        
         for(let i=0; i<first; i++) cal.appendChild(document.createElement('div')).className='day';
+        
         for(let d=1; d<=last; d++) {
             const dStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
             const div = document.createElement('div');
             div.className = 'day' + (dStr === new Date().toISOString().split('T')[0] ? ' today' : '');
             div.onclick = () => showDetail(dStr);
-            div.innerHTML = `<span class="day-num">${d}</span>`;
+            
+            // 달력에 금액 표시 로직
+            let dayInc = 0, dayExp = 0, dayBnk = 0;
+            records.filter(r => r.date === dStr).forEach(r => {
+                if(r.type === 'income' || r.type === 'frombank') dayInc += r.amount;
+                else if(r.type === 'expense') dayExp += r.amount;
+                else if(r.type === 'tobank' || r.type === 'direct_in') dayBnk += r.amount;
+            });
+
+            div.innerHTML = `
+                <span class="day-num">${d}</span>
+                ${dayInc > 0 ? `<span class="cal-amt cal-inc">+${dayInc.toLocaleString()}</span>` : ''}
+                ${dayExp > 0 ? `<span class="cal-amt cal-exp">-${dayExp.toLocaleString()}</span>` : ''}
+                ${dayBnk > 0 ? `<span class="cal-amt cal-bnk">🏦${dayBnk.toLocaleString()}</span>` : ''}
+            `;
             cal.appendChild(div);
         }
     }
@@ -244,10 +266,19 @@
         detailView.style.display = 'block';
         document.getElementById('selectedDateStr').innerText = "📍 " + dateStr;
         dayList.innerHTML = "";
+        
         dayRecords.forEach(r => {
+            let tagClass = '', tagText = '';
+            if(r.type === 'income' || r.type === 'frombank') { tagClass = 'tag-inc'; tagText = '(수입)'; }
+            else if(r.type === 'expense') { tagClass = 'tag-exp'; tagText = '(지출)'; }
+            else { tagClass = 'tag-bnk'; tagText = '(금고)'; }
+
             const div = document.createElement('div');
             div.className = 'list-item';
-            div.innerHTML = `<span><b>${r.memo}</b></span> <div><span>${r.amount.toLocaleString()}원</span><button class="del-btn" onclick="deleteRecord(${r.id}, '${dateStr}')">X</button></div>`;
+            div.innerHTML = `
+                <span><span class="tag ${tagClass}">${tagText}</span><b>${r.memo}</b></span>
+                <div><span>${r.amount.toLocaleString()}원</span><button class="del-btn" onclick="deleteRecord(${r.id}, '${dateStr}')">X</button></div>
+            `;
             dayList.appendChild(div);
         });
     }
