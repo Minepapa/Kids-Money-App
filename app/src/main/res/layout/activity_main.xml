@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FDFBFF"
+    android:padding="12dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- 타이틀 -->
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="💰 꿈나무 용돈기입장"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:paddingBottom="8dp"/>
+
+        <!-- 대시보드 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:background="@drawable/box_bank"
+                android:padding="10dp"
+                android:layout_marginEnd="4dp">
+                <TextView
+                    android:text="🏦 아빠 금고"
+                    android:textSize="11sp"
+                    android:textColor="#666"/>
+                <TextView
+                    android:id="@+id/tvBank"
+                    android:text="0원"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#d4ac0d"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:background="@drawable/box_wallet"
+                android:padding="10dp"
+                android:layout_marginStart="4dp">
+                <TextView
+                    android:text="💵 남은 용돈"
+                    android:textSize="11sp"
+                    android:textColor="#666"/>
+                <TextView
+                    android:id="@+id/tvWallet"
+                    android:text="0원"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#4a90e2"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- 월 이동 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="6dp">
+
+            <Button
+                android:id="@+id/btnPrevMonth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="◀"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/tvMonth"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+            <Button
+                android:id="@+id/btnNextMonth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="▶"
+                android:textSize="12sp"/>
+
+        </LinearLayout>
+
+        <!-- 캘린더 -->
+        <GridLayout
+            android:id="@+id/calendarGrid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="7"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- 월 통계 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="#F9F9F9"
+            android:padding="8dp"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/tvMonthInc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="#2ecc71"
+                android:textSize="10sp"/>
+
+            <TextView
+                android:id="@+id/tvMonthExp"
+                android:layout_width="0dp"
