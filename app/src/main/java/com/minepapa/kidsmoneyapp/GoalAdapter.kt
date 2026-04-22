@@ -15,9 +15,6 @@ class GoalAdapter(
         fun bind(goal: SavingsGoal) {
             binding.tvGoalTitle.text = if (goal.completed) "✅ ${goal.title}" else goal.title
             binding.tvGoalAmount.text = "${goal.savedAmount.formatted()}원 / ${goal.targetAmount.formatted()}원"
-            binding.progressGoal.progress = goal.progressPercent
-            binding.tvGoalPercent.text = "${goal.progressPercent}% 달성"
-            binding.tvGoalRemaining.text = if (goal.completed) "🎉 목표 달성!" else "남은 금액: ${goal.remaining.formatted()}원"
 
             binding.btnDeleteGoal.setOnClickListener { onDelete(goal) }
         }

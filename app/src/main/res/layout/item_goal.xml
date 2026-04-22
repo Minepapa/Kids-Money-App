@@ -40,35 +40,4 @@
             android:padding="4dp"/>
     </LinearLayout>
 
-    <ProgressBar
-        android:id="@+id/progressGoal"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="12dp"
-        android:max="100"
-        android:progressTint="#2ecc71"
-        android:progressBackgroundTint="#E8F5E9"
-        android:layout_marginBottom="4dp"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/tvGoalPercent"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="11sp"
-            android:textColor="#2ecc71"/>
-
-        <TextView
-            android:id="@+id/tvGoalRemaining"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="11sp"
-            android:textColor="#888888"/>
-    </LinearLayout>
-
 </LinearLayout>

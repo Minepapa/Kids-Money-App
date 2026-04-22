@@ -236,15 +236,15 @@ class HomeFragment : Fragment() {
             }
             row.addView(TextView(requireContext()).apply {
                 text = label; setTextColor(0xFFFFFFFF.toInt()); setBackgroundColor(color)
-                textSize = 9f; setPadding(6, 2, 6, 2)
+                textSize = 13f; setPadding(6, 2, 6, 2)
             })
             row.addView(TextView(requireContext()).apply {
-                text = "  ${r.memo}"; textSize = 11f
+                text = "  ${r.memo}"; textSize = 13f
                 layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
             })
             row.addView(TextView(requireContext()).apply {
                 text = "${r.amount.formatted()}원"; setTextColor(color)
-                textSize = 11f; typeface = android.graphics.Typeface.DEFAULT_BOLD
+                textSize = 13f; typeface = android.graphics.Typeface.DEFAULT_BOLD
             })
             if (r.type != "interest") {
                 row.addView(Button(requireContext()).apply {

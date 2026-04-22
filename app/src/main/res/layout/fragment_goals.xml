@@ -53,32 +53,6 @@
             android:padding="16dp"
             android:visibility="gone"/>
 
-        <!-- 소비 분석 차트 -->
-        <TextView
-            android:text="📊 이번 달 소비 분석"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"/>
-
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/pieChart"
-            android:layout_width="match_parent"
-            android:layout_height="140dp"
-            android:layout_marginBottom="8dp"/>
-
-        <TextView
-            android:id="@+id/tvNoChart"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="이번 달 기록이 없어요 📝"
-            android:gravity="center"
-            android:textColor="#AAAAAA"
-            android:textSize="13sp"
-            android:padding="16dp"
-            android:visibility="gone"/>
-
         <!-- 업적 뱃지 섹션 -->
         <TextView
             android:text="🏆 나의 뱃지"

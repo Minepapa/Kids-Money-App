@@ -18,6 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="무엇을 살까요? (예: 레고, 게임)"
+        android:textColorHint="#CCCCCC"
         android:layout_marginBottom="12dp"/>
 
     <EditText
@@ -25,6 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="얼마가 필요해요? (원)"
+        android:textColorHint="#CCCCCC"
         android:inputType="number"/>
 
 </LinearLayout>
