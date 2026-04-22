@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">꿈나무 용돈기입장</string>
+    <string name="title">꿈나무 용돈기입장</string>
+    <string name="bank">아빠 금고</string>
+    <string name="wallet">남은 용돈</string>
+    <string name="prev">이전</string>
+    <string name="next">다음</string>
+    <string name="add">기록하기</string>
+    <string name="date_hint">날짜 (YYYY-MM-DD)</string>
+    <string name="memo_hint">무엇을 했나요?</string>
+    <string name="amount_hint">얼마인가요?</string>
+    <string name="type_expense">지출</string>
+    <string name="type_income">수입</string>
+    <string name="type_bank">금고 저축</string>
+</resources>
