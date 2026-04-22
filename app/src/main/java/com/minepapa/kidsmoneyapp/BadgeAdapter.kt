@@ -2,6 +2,7 @@ package com.minepapa.kidsmoneyapp
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.minepapa.kidsmoneyapp.databinding.ItemBadgeBinding
 
@@ -19,6 +20,16 @@ class BadgeAdapter(
             } else {
                 binding.root.alpha = 0.3f
                 binding.tvBadgeName.setTextColor(0xFF999999.toInt())
+            }
+
+            // 길게 누르면 획득 조건 설명 표시
+            binding.root.setOnLongClickListener {
+                AlertDialog.Builder(it.context)
+                    .setTitle("${achievement.emoji} ${achievement.titleKo}")
+                    .setMessage(achievement.descriptionKo)
+                    .setPositiveButton("확인", null)
+                    .show()
+                true
             }
         }
     }

@@ -8,7 +8,7 @@ import java.time.LocalDate
 import java.time.YearMonth
 
 class DatabaseHelper(context: Context) :
-    SQLiteOpenHelper(context, "kids_money.db", null, 2) {
+    SQLiteOpenHelper(context, "kids_money.db", null, 3) {
 
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL("""
@@ -32,9 +32,11 @@ class DatabaseHelper(context: Context) :
         """)
         db.execSQL("""
             CREATE TABLE achievements (
-                id TEXT PRIMARY KEY,
+                id TEXT NOT NULL,
+                month TEXT NOT NULL DEFAULT '',
                 unlocked_date TEXT,
-                seen INTEGER NOT NULL DEFAULT 0
+                seen INTEGER NOT NULL DEFAULT 0,
+                PRIMARY KEY (id, month)
             )
         """)
     }
@@ -58,6 +60,10 @@ class DatabaseHelper(context: Context) :
                     seen INTEGER NOT NULL DEFAULT 0
                 )
             """)
+        }
+        if (oldVersion < 3) {
+            // 기존 achievements 테이블에 month 컬럼 추가 (기존 데이터 보존)
+            runCatching { db.execSQL("ALTER TABLE achievements ADD COLUMN month TEXT NOT NULL DEFAULT ''") }
         }
     }
 
@@ -180,55 +186,68 @@ class DatabaseHelper(context: Context) :
         writableDatabase.update("savings_goals", values, "id=?", arrayOf(id.toString()))
     }
 
-    fun countCompletedGoals(): Int {
-        readableDatabase.rawQuery("SELECT COUNT(*) FROM savings_goals WHERE completed=1", null).use {
+    fun countCompletedGoalsInMonth(month: String): Int {
+        // 해당 월에 created_date가 있거나, completed된 목표 중 해당 월 기록 기준
+        readableDatabase.rawQuery(
+            "SELECT COUNT(*) FROM savings_goals WHERE completed=1 AND created_date LIKE ?",
+            arrayOf("$month%")
+        ).use {
             if (it.moveToFirst()) return it.getInt(0)
         }
         return 0
     }
 
-    // ── Achievements ──────────────────────────────────────────────────────────
+    // ── Achievements (월별) ────────────────────────────────────────────────────
 
-    fun isAchievementUnlocked(id: String): Boolean {
-        readableDatabase.query("achievements", arrayOf("unlocked_date"), "id=?", arrayOf(id), null, null, null).use {
+    fun isAchievementUnlocked(id: String, month: String): Boolean {
+        readableDatabase.query(
+            "achievements", arrayOf("unlocked_date"),
+            "id=? AND month=?", arrayOf(id, month), null, null, null
+        ).use {
             return it.moveToFirst() && !it.isNull(0)
         }
     }
 
-    fun unlockAchievement(id: String, date: String) {
+    fun unlockAchievement(id: String, date: String, month: String) {
         val values = ContentValues().apply {
             put("id", id)
+            put("month", month)
             put("unlocked_date", date)
             put("seen", 0)
         }
         writableDatabase.insertWithOnConflict("achievements", null, values, SQLiteDatabase.CONFLICT_IGNORE)
     }
 
-    fun getUnlockedAchievementIds(): Set<String> {
+    fun getUnlockedAchievementIds(month: String): Set<String> {
         val ids = mutableSetOf<String>()
-        readableDatabase.query("achievements", arrayOf("id"), "unlocked_date IS NOT NULL", null, null, null, null).use {
+        readableDatabase.query(
+            "achievements", arrayOf("id"),
+            "month=? AND unlocked_date IS NOT NULL", arrayOf(month), null, null, null
+        ).use {
             while (it.moveToNext()) ids.add(it.getString(0))
         }
         return ids
     }
 
-    fun getUnseenAchievements(): List<String> {
+    fun getUnseenAchievements(month: String): List<String> {
         val ids = mutableListOf<String>()
-        readableDatabase.query("achievements", arrayOf("id"), "seen=0 AND unlocked_date IS NOT NULL", null, null, null, null).use {
+        readableDatabase.query(
+            "achievements", arrayOf("id"),
+            "month=? AND seen=0 AND unlocked_date IS NOT NULL", arrayOf(month), null, null, null
+        ).use {
             while (it.moveToNext()) ids.add(it.getString(0))
         }
         return ids
     }
 
-    fun markAchievementSeen(id: String) {
+    fun markAchievementSeen(id: String, month: String) {
         val values = ContentValues().apply { put("seen", 1) }
-        writableDatabase.update("achievements", values, "id=?", arrayOf(id))
+        writableDatabase.update("achievements", values, "id=? AND month=?", arrayOf(id, month))
     }
 
     // ── Interest ──────────────────────────────────────────────────────────────
 
     fun applyMonthlyInterestIfNeeded(ratePercent: Int, lastInterestMonth: String?): String? {
-        val today = LocalDate.now()
         val currentMonth = YearMonth.now()
 
         val startMonth = if (lastInterestMonth == null) {
@@ -242,7 +261,6 @@ class DatabaseHelper(context: Context) :
 
         var month = startMonth
         while (month.isBefore(currentMonth)) {
-            val monthStr = month.toString()
             val bankBalance = computeBankBalanceUpTo(month.atEndOfMonth())
             val interest = (bankBalance * ratePercent / 100.0).toInt()
             if (interest > 0) {

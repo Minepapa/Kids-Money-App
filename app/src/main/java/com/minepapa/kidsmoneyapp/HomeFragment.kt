@@ -3,6 +3,7 @@ package com.minepapa.kidsmoneyapp
 import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
+import android.text.InputType
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +15,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.minepapa.kidsmoneyapp.databinding.DialogBankSettingsBinding
 import com.minepapa.kidsmoneyapp.databinding.FragmentHomeBinding
 import java.time.LocalDate
-import java.time.YearMonth
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 class HomeFragment : Fragment() {
 
@@ -34,22 +36,17 @@ class HomeFragment : Fragment() {
 
         applyInterestIfNeeded()
 
+        // 오늘 날짜 표시
+        binding.tvTodayDate.text = LocalDate.now()
+            .format(DateTimeFormatter.ofPattern("yyyy년 M월 d일 (E)", Locale.KOREAN))
+
         binding.etDate.text = selectedDate
         binding.etDate.setOnClickListener { openDatePicker() }
 
         binding.typeToggleGroup.check(R.id.btnTypeExpense)
 
-        listOf(
-            binding.btnAmt500 to 500,
-            binding.btnAmt1000 to 1000,
-            binding.btnAmt5000 to 5000,
-            binding.btnAmt10000 to 10000
-        ).forEach { (btn, amount) ->
-            btn.setOnClickListener { binding.etAmount.setText(amount.toString()) }
-        }
-
         binding.btnAdd.setOnClickListener { addRecord() }
-        binding.btnBankSettings.setOnClickListener { openBankSettings() }
+        binding.btnBankSettings.setOnClickListener { checkPinThenOpenSettings() }
 
         render()
     }
@@ -65,6 +62,27 @@ class HomeFragment : Fragment() {
             selectedDate = "%04d-%02d-%02d".format(y, m + 1, day)
             binding.etDate.text = selectedDate
         }, d.year, d.monthValue - 1, d.dayOfMonth).show()
+    }
+
+    private fun checkPinThenOpenSettings() {
+        val correctPin = LocalDate.now().format(DateTimeFormatter.ofPattern("MMdd"))
+        val input = EditText(requireContext()).apply {
+            hint = "비밀번호 입력 (숫자 4자리)"
+            inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+        }
+        AlertDialog.Builder(requireContext())
+            .setTitle("🔒 아빠 금고 잠금")
+            .setMessage("비밀번호를 입력해주세요")
+            .setView(input)
+            .setPositiveButton("확인") { _, _ ->
+                if (input.text.toString() == correctPin) {
+                    openBankSettings()
+                } else {
+                    Toast.makeText(requireContext(), "비밀번호가 틀렸어요! 🔒", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton("취소", null)
+            .show()
     }
 
     private fun openBankSettings() {
@@ -133,10 +151,11 @@ class HomeFragment : Fragment() {
         binding.etMemo.setText("")
         binding.etAmount.setText("")
 
+        val currentMonth = java.time.YearMonth.now().toString()
         val newlyUnlocked = AchievementManager.checkAndUnlock(db)
         newlyUnlocked.firstOrNull()?.let { a ->
             Snackbar.make(binding.root, "${a.emoji} ${a.titleKo} 뱃지를 받았어요!", Snackbar.LENGTH_LONG).show()
-            db.markAchievementSeen(a.id)
+            db.markAchievementSeen(a.id, currentMonth)
         }
 
         render()

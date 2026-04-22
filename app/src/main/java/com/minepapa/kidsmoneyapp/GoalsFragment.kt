@@ -45,11 +45,6 @@ class GoalsFragment : Fragment() {
                     }
                     .setNegativeButton("취소", null)
                     .show()
-            },
-            onAddSavings = { goal, amount ->
-                db.updateGoalSaved(goal.id, amount)
-                loadGoals()
-                AchievementManager.checkAndUnlock(db)
             }
         )
         binding.rvGoals.layoutManager = LinearLayoutManager(requireContext())
