@@ -11,4 +11,15 @@
     <color name="income">#2ecc71</color>
     <color name="expense">#e74c3c</color>
     <color name="bank">#d4ac0d</color>
+    <color name="surface">#FDFBFF</color>
+    <color name="on_surface">#1C1B1F</color>
+    <color name="progress_track">#E8F5E9</color>
+    <color name="badge_locked">#CCCCCC</color>
+    <color name="chip_selected_expense">#FFEBEE</color>
+    <color name="chip_selected_income">#E8F5E9</color>
+    <color name="chip_selected_bank">#FFF9E6</color>
+    <color name="interest">#27ae60</color>
+    <color name="card_wallet">#F5FAFF</color>
+    <color name="card_bank">#FFF9E6</color>
+    <color name="bottom_nav_bg">#FFFFFF</color>
 </resources>
