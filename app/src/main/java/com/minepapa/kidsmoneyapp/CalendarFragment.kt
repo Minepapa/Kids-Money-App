@@ -1,5 +1,6 @@
 package com.minepapa.kidsmoneyapp
 
+import android.content.res.Resources
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -58,15 +59,21 @@ class CalendarFragment : Fragment() {
 
     private fun buildCalendar() {
         binding.calendarGrid.removeAllViews()
+
+        // 화면 높이의 약 70%를 7행(헤더+6주)으로 나눠 셀 높이 계산
+        val screenHeight = Resources.getSystem().displayMetrics.heightPixels
+        val cellHeight = (screenHeight * 0.62 / 7).toInt()
+
         val days = listOf("일", "월", "화", "수", "목", "금", "토")
         days.forEach { d ->
             val tv = TextView(requireContext()).apply {
                 text = d
                 gravity = Gravity.CENTER
-                textSize = 9f
+                textSize = 10f
                 setTypeface(null, android.graphics.Typeface.BOLD)
                 layoutParams = GridLayout.LayoutParams().apply {
                     width = 0
+                    height = cellHeight
                     columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f)
                 }
             }
@@ -81,6 +88,7 @@ class CalendarFragment : Fragment() {
             val empty = TextView(requireContext())
             empty.layoutParams = GridLayout.LayoutParams().apply {
                 width = 0
+                height = cellHeight
                 columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f)
             }
             binding.calendarGrid.addView(empty)
@@ -104,6 +112,7 @@ class CalendarFragment : Fragment() {
                 setBackgroundColor(if (dStr == today) 0xFFFFF9E6.toInt() else 0xFFFFFFFF.toInt())
                 layoutParams = GridLayout.LayoutParams().apply {
                     width = 0
+                    height = cellHeight
                     columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f)
                     setMargins(1, 1, 1, 1)
                 }
@@ -116,12 +125,12 @@ class CalendarFragment : Fragment() {
                 typeface = android.graphics.Typeface.DEFAULT_BOLD
             })
             if (dInc > 0) cell.addView(TextView(requireContext()).apply {
-                text = "+${dInc.formatted()}"
+                text = "📈${dInc.formatted()}"
                 textSize = 7f
                 setTextColor(0xFF2ecc71.toInt())
             })
             if (dExp > 0) cell.addView(TextView(requireContext()).apply {
-                text = "-${dExp.formatted()}"
+                text = "📉${dExp.formatted()}"
                 textSize = 7f
                 setTextColor(0xFFe74c3c.toInt())
             })

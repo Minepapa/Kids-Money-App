@@ -19,6 +19,20 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Generate app icons from icon.jpg
+        run: |
+          sudo apt-get install -y imagemagick
+          mkdir -p app/src/main/res/mipmap-mdpi \
+                   app/src/main/res/mipmap-hdpi \
+                   app/src/main/res/mipmap-xhdpi \
+                   app/src/main/res/mipmap-xxhdpi \
+                   app/src/main/res/mipmap-xxxhdpi
+          convert icon.jpg -resize 48x48   app/src/main/res/mipmap-mdpi/ic_launcher.png
+          convert icon.jpg -resize 72x72   app/src/main/res/mipmap-hdpi/ic_launcher.png
+          convert icon.jpg -resize 96x96   app/src/main/res/mipmap-xhdpi/ic_launcher.png
+          convert icon.jpg -resize 144x144 app/src/main/res/mipmap-xxhdpi/ic_launcher.png
+          convert icon.jpg -resize 192x192 app/src/main/res/mipmap-xxxhdpi/ic_launcher.png
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 

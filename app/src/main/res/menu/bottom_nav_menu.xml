@@ -3,13 +3,13 @@
     <item
         android:id="@+id/nav_home"
         android:title="홈"
-        android:icon="@android:drawable/ic_menu_agenda"/>
+        android:icon="@drawable/ic_tab_home"/>
     <item
         android:id="@+id/nav_calendar"
         android:title="달력"
-        android:icon="@android:drawable/ic_menu_my_calendar"/>
+        android:icon="@drawable/ic_tab_calendar"/>
     <item
         android:id="@+id/nav_goals"
         android:title="목표"
-        android:icon="@android:drawable/btn_star"/>
+        android:icon="@drawable/ic_tab_goals"/>
 </menu>
