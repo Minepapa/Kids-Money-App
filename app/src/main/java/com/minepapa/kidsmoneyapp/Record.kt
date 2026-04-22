@@ -3,7 +3,7 @@ package com.minepapa.kidsmoneyapp
 data class Record(
     val id: Long = 0,
     val date: String,
-    val type: String,  // income, expense, tobank, frombank, direct_in
+    val type: String,  // income, expense, tobank, frombank, direct_in, interest
     val memo: String,
     val amount: Int
 ) {
@@ -14,5 +14,5 @@ data class Record(
         get() = type == "expense"
 
     val isBank: Boolean
-        get() = type == "tobank" || type == "direct_in"
+        get() = type == "tobank" || type == "direct_in" || type == "interest"
 }

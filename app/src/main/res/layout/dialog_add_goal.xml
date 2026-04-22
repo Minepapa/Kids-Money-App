@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:text="새 저축 목표"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"/>
+
+    <EditText
+        android:id="@+id/etGoalTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="무엇을 살까요? (예: 레고, 게임)"
+        android:layout_marginBottom="12dp"/>
+
+    <EditText
+        android:id="@+id/etGoalAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="얼마가 필요해요? (원)"
+        android:inputType="number"/>
+
+</LinearLayout>
