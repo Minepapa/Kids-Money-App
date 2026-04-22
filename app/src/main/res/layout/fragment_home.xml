@@ -15,34 +15,51 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:background="#4a90e2"
             android:padding="14dp"
+            android:gravity="center_vertical"
             android:layout_marginBottom="12dp">
 
-            <TextView
-                android:text="안녕, 미네야! 👋"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#FFFFFF"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:text="오늘도 용돈을 기록해봐요 😊"
-                android:textSize="12sp"
-                android:textColor="#CCE8FF"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"/>
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvTodayDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="11sp"
-                android:textColor="#AACCFF"
-                android:layout_marginTop="4dp"/>
+                <TextView
+                    android:text="안녕, 미네야!"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:text="오늘도 용돈을 기록해봐요"
+                    android:textSize="13sp"
+                    android:textColor="#CCE8FF"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"/>
+
+                <TextView
+                    android:id="@+id/tvTodayDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="11sp"
+                    android:textColor="#AACCFF"
+                    android:layout_marginTop="4dp"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:src="@drawable/ic_profile_cartoon"
+                android:scaleType="fitCenter"
+                android:layout_marginStart="8dp"
+                android:contentDescription="@null"/>
 
         </LinearLayout>
 
@@ -160,6 +177,14 @@
                     android:textSize="9sp"
                     android:textColor="#ff9800"
                     android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/tvDailyInterest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="9sp"
+                    android:textColor="#d4ac0d"
+                    android:visibility="gone"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -177,6 +202,7 @@
             <TextView
                 android:text="날짜"
                 android:textSize="13sp"
+                android:textStyle="bold"
                 android:textColor="#666666"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -191,13 +217,14 @@
                 android:textSize="14sp"
                 android:textColor="#333333"
                 android:hint="날짜를 선택하세요"
-                android:textColorHint="#AAAAAA"
+                android:textColorHint="#CCCCCC"
                 android:layout_marginBottom="10dp"/>
 
             <!-- 거래 유형 토글 -->
             <TextView
                 android:text="종류"
                 android:textSize="13sp"
+                android:textStyle="bold"
                 android:textColor="#666666"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -218,6 +245,7 @@
                     android:layout_weight="1"
                     android:text="📉 지출"
                     android:textSize="14sp"
+                    android:textStyle="bold"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
 
                 <Button
@@ -227,6 +255,7 @@
                     android:layout_weight="1"
                     android:text="📈 수입"
                     android:textSize="14sp"
+                    android:textStyle="bold"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
 
                 <Button
@@ -236,6 +265,7 @@
                     android:layout_weight="1"
                     android:text="🏦 금고"
                     android:textSize="14sp"
+                    android:textStyle="bold"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
 
             </com.google.android.material.button.MaterialButtonToggleGroup>
@@ -244,6 +274,7 @@
             <TextView
                 android:text="내용"
                 android:textSize="13sp"
+                android:textStyle="bold"
                 android:textColor="#666666"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -263,6 +294,7 @@
             <TextView
                 android:text="금액"
                 android:textSize="13sp"
+                android:textStyle="bold"
                 android:textColor="#666666"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

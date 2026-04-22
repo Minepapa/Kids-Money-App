@@ -40,6 +40,12 @@ class GoalsFragment : Fragment() {
                     }
                     .setNegativeButton("취소", null)
                     .show()
+            },
+            onPurchaseToggle = { goal ->
+                db.markGoalPurchased(goal.id, !goal.purchased)
+                AchievementManager.checkAndUnlock(db)
+                loadGoals()
+                loadBadges()
             }
         )
         binding.rvGoals.layoutManager = LinearLayoutManager(requireContext())

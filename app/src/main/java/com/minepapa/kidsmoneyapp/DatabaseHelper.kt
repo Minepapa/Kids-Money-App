@@ -8,7 +8,7 @@ import java.time.LocalDate
 import java.time.YearMonth
 
 class DatabaseHelper(context: Context) :
-    SQLiteOpenHelper(context, "kids_money.db", null, 3) {
+    SQLiteOpenHelper(context, "kids_money.db", null, 4) {
 
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL("""
@@ -27,7 +27,8 @@ class DatabaseHelper(context: Context) :
                 target_amount INTEGER NOT NULL,
                 saved_amount INTEGER NOT NULL DEFAULT 0,
                 created_date TEXT NOT NULL,
-                completed INTEGER NOT NULL DEFAULT 0
+                completed INTEGER NOT NULL DEFAULT 0,
+                purchased INTEGER NOT NULL DEFAULT 0
             )
         """)
         db.execSQL("""
@@ -62,8 +63,10 @@ class DatabaseHelper(context: Context) :
             """)
         }
         if (oldVersion < 3) {
-            // 기존 achievements 테이블에 month 컬럼 추가 (기존 데이터 보존)
             runCatching { db.execSQL("ALTER TABLE achievements ADD COLUMN month TEXT NOT NULL DEFAULT ''") }
+        }
+        if (oldVersion < 4) {
+            runCatching { db.execSQL("ALTER TABLE savings_goals ADD COLUMN purchased INTEGER NOT NULL DEFAULT 0") }
         }
     }
 
@@ -153,7 +156,7 @@ class DatabaseHelper(context: Context) :
 
     fun getAllGoals(): List<SavingsGoal> {
         val list = mutableListOf<SavingsGoal>()
-        readableDatabase.query("savings_goals", null, null, null, null, null, "completed ASC, id ASC").use {
+        readableDatabase.query("savings_goals", null, null, null, null, null, "purchased ASC, id ASC").use {
             while (it.moveToNext()) {
                 list.add(
                     SavingsGoal(
@@ -162,12 +165,28 @@ class DatabaseHelper(context: Context) :
                         targetAmount = it.getInt(2),
                         savedAmount = it.getInt(3),
                         createdDate = it.getString(4),
-                        completed = it.getInt(5) == 1
+                        completed = it.getInt(5) == 1,
+                        purchased = it.getColumnIndex("purchased").let { col -> if (col >= 0) it.getInt(col) == 1 else false }
                     )
                 )
             }
         }
         return list
+    }
+
+    fun markGoalPurchased(id: Long, purchased: Boolean) {
+        val values = ContentValues().apply { put("purchased", if (purchased) 1 else 0) }
+        writableDatabase.update("savings_goals", values, "id=?", arrayOf(id.toString()))
+    }
+
+    fun countPurchasedGoalsInMonth(month: String): Int {
+        readableDatabase.rawQuery(
+            "SELECT COUNT(*) FROM savings_goals WHERE purchased=1 AND created_date LIKE ?",
+            arrayOf("$month%")
+        ).use {
+            if (it.moveToFirst()) return it.getInt(0)
+        }
+        return 0
     }
 
     fun deleteGoal(id: Long) {

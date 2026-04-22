@@ -2,42 +2,44 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
     android:padding="12dp"
-    android:layout_marginBottom="8dp"
+    android:layout_marginBottom="6dp"
     android:background="#FFFFFF">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tvGoalTitle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginBottom="6dp">
+        android:layout_weight="1"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="#333333"/>
 
-        <TextView
-            android:id="@+id/tvGoalTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:textColor="#333333"/>
+    <TextView
+        android:id="@+id/tvGoalAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="13sp"
+        android:textColor="#666666"
+        android:layout_marginEnd="8dp"/>
 
-        <TextView
-            android:id="@+id/tvGoalAmount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="11sp"
-            android:textColor="#666666"
-            android:layout_marginEnd="6dp"/>
+    <TextView
+        android:id="@+id/tvGoalPurchased"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="🎯"
+        android:textSize="22sp"
+        android:padding="4dp"
+        android:layout_marginEnd="4dp"/>
 
-        <TextView
-            android:id="@+id/btnDeleteGoal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="🗑️"
-            android:textSize="16sp"
-            android:padding="4dp"/>
-    </LinearLayout>
+    <TextView
+        android:id="@+id/btnDeleteGoal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="🗑️"
+        android:textSize="18sp"
+        android:padding="4dp"/>
 
 </LinearLayout>

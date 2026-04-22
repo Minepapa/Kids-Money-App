@@ -1,6 +1,6 @@
 package com.minepapa.kidsmoneyapp
 
-import android.app.AlertDialog
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,14 +8,28 @@ import com.minepapa.kidsmoneyapp.databinding.ItemGoalBinding
 
 class GoalAdapter(
     private var goals: List<SavingsGoal>,
-    private val onDelete: (SavingsGoal) -> Unit
+    private val onDelete: (SavingsGoal) -> Unit,
+    private val onPurchaseToggle: (SavingsGoal) -> Unit
 ) : RecyclerView.Adapter<GoalAdapter.ViewHolder>() {
 
     inner class ViewHolder(private val binding: ItemGoalBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(goal: SavingsGoal) {
-            binding.tvGoalTitle.text = if (goal.completed) "✅ ${goal.title}" else goal.title
-            binding.tvGoalAmount.text = "${goal.savedAmount.formatted()}원 / ${goal.targetAmount.formatted()}원"
+            binding.tvGoalAmount.text = "${goal.targetAmount.formatted()}원"
+            binding.tvGoalPurchased.text = if (goal.purchased) "✅" else "🎯"
 
+            if (goal.purchased) {
+                binding.tvGoalTitle.text = goal.title
+                binding.tvGoalTitle.paintFlags = binding.tvGoalTitle.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                binding.tvGoalTitle.setTextColor(0xFF999999.toInt())
+                binding.tvGoalAmount.setTextColor(0xFF999999.toInt())
+            } else {
+                binding.tvGoalTitle.text = goal.title
+                binding.tvGoalTitle.paintFlags = binding.tvGoalTitle.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+                binding.tvGoalTitle.setTextColor(0xFF333333.toInt())
+                binding.tvGoalAmount.setTextColor(0xFF666666.toInt())
+            }
+
+            binding.tvGoalPurchased.setOnClickListener { onPurchaseToggle(goal) }
             binding.btnDeleteGoal.setOnClickListener { onDelete(goal) }
         }
     }

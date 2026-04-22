@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="56dp"
+    android:height="56dp"
+    android:viewportWidth="56"
+    android:viewportHeight="56">
+
+    <!-- Background circle -->
+    <path
+        android:fillColor="#E3EAF8"
+        android:pathData="M28,2 A26,26 0 1,0 28,54 A26,26 0 1,0 28,2 Z"/>
+
+    <!-- Skin face circle -->
+    <path
+        android:fillColor="#FFDAB9"
+        android:pathData="M28,10 A18,18 0 1,0 28,46 A18,18 0 1,0 28,10 Z"/>
+
+    <!-- Hair top -->
+    <path
+        android:fillColor="#5C3317"
+        android:pathData="M10,24 A18,18 0 0,1 46,24 L46,16 C42,4 36,2 28,2 C20,2 14,4 10,16 Z"/>
+
+    <!-- Hair left side -->
+    <path
+        android:fillColor="#5C3317"
+        android:pathData="M10,24 L10,36 C10,40 14,39 14,35 L14,24 Z"/>
+
+    <!-- Hair right side -->
+    <path
+        android:fillColor="#5C3317"
+        android:pathData="M46,24 L46,36 C46,40 42,39 42,35 L42,24 Z"/>
+
+    <!-- Left eye -->
+    <path
+        android:fillColor="#2C1810"
+        android:pathData="M20,26 A3,3 0 1,0 20,32 A3,3 0 1,0 20,26 Z"/>
+
+    <!-- Right eye -->
+    <path
+        android:fillColor="#2C1810"
+        android:pathData="M36,26 A3,3 0 1,0 36,32 A3,3 0 1,0 36,26 Z"/>
+
+    <!-- Left eye shine -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M21,27 A1.2,1.2 0 1,0 21,29.4 A1.2,1.2 0 1,0 21,27 Z"/>
+
+    <!-- Right eye shine -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M37,27 A1.2,1.2 0 1,0 37,29.4 A1.2,1.2 0 1,0 37,27 Z"/>
+
+    <!-- Left cheek blush -->
+    <path
+        android:fillColor="#FFB3A0"
+        android:fillAlpha="0.6"
+        android:pathData="M12,35 A5,3 0 1,0 12,41 A5,3 0 1,0 12,35 Z"/>
+
+    <!-- Right cheek blush -->
+    <path
+        android:fillColor="#FFB3A0"
+        android:fillAlpha="0.6"
+        android:pathData="M44,35 A5,3 0 1,0 44,41 A5,3 0 1,0 44,35 Z"/>
+
+    <!-- Smile -->
+    <path
+        android:strokeColor="#CC5555"
+        android:strokeWidth="2"
+        android:fillColor="#00000000"
+        android:pathData="M21,38 Q28,44 35,38"/>
+
+</vector>

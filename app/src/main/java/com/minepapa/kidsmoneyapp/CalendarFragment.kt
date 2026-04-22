@@ -1,6 +1,7 @@
 package com.minepapa.kidsmoneyapp
 
 import android.content.res.Resources
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -50,9 +51,9 @@ class CalendarFragment : Fragment() {
                 "tobank", "direct_in", "interest" -> mBnk += it.amount
             }
         }
-        binding.tvMonthInc.text = "📈 수입\n${mInc.formatted()}원"
-        binding.tvMonthExp.text = "📉 지출\n${mExp.formatted()}원"
-        binding.tvMonthBnk.text = "🏦 저축\n${mBnk.formatted()}원"
+        binding.tvMonthInc.text = "📈 수입\n\n${mInc.formatted()}원"
+        binding.tvMonthExp.text = "📉 지출\n\n${mExp.formatted()}원"
+        binding.tvMonthBnk.text = "🏦 저축\n\n${mBnk.formatted()}원"
 
         buildCalendar()
     }
@@ -181,14 +182,15 @@ class CalendarFragment : Fragment() {
             })
             row.addView(TextView(requireContext()).apply {
                 text = "  ${r.memo}"; textSize = 13f
+                typeface = Typeface.DEFAULT_BOLD
                 layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
             })
             row.addView(TextView(requireContext()).apply {
                 text = "${r.amount.formatted()}원"; setTextColor(color)
-                textSize = 13f; typeface = android.graphics.Typeface.DEFAULT_BOLD
+                textSize = 13f; typeface = Typeface.DEFAULT_BOLD
             })
-            row.addView(Button(requireContext()).apply {
-                text = "X"; textSize = 12f; setPadding(8, 2, 8, 2)
+            row.addView(TextView(requireContext()).apply {
+                text = "🗑️"; textSize = 16f; setPadding(8, 2, 8, 2)
                 setOnClickListener { db.deleteRecord(r.id); render(); showDetail(dateStr) }
             })
             binding.llDayList.addView(row)
