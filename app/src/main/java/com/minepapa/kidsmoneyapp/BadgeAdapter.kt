@@ -19,7 +19,7 @@ class BadgeAdapter(
                 binding.root.setBackgroundColor(0xFFFFF9E6.toInt())
                 binding.tvBadgeName.setTextColor(0xFF333333.toInt())
             } else {
-                binding.root.alpha = 0.12f
+                binding.root.alpha = 0.25f
                 binding.root.setBackgroundColor(0xFFFFFFFF.toInt())
                 binding.tvBadgeName.setTextColor(0xFF999999.toInt())
             }

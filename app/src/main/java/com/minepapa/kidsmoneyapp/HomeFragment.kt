@@ -47,9 +47,9 @@ class HomeFragment : Fragment() {
         binding.etDate.setOnClickListener { openDatePicker() }
 
         binding.typeToggleGroup.check(R.id.btnTypeExpense)
-        updateToggleColors(R.id.btnTypeExpense)
-        binding.typeToggleGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
-            if (isChecked) updateToggleColors(checkedId)
+        updateToggleColors()
+        binding.typeToggleGroup.addOnButtonCheckedListener { _, _, isChecked ->
+            if (isChecked) updateToggleColors()
         }
 
         binding.btnAdd.setOnClickListener { addRecord() }
@@ -69,10 +69,10 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-    private fun updateToggleColors(checkedId: Int) {
-        binding.btnTypeExpense.setTextColor(if (checkedId == R.id.btnTypeExpense) Color.BLACK else Color.parseColor("#e74c3c"))
-        binding.btnTypeIncome.setTextColor(if (checkedId == R.id.btnTypeIncome) Color.BLACK else Color.parseColor("#2ecc71"))
-        binding.btnTypeBank.setTextColor(if (checkedId == R.id.btnTypeBank) Color.BLACK else Color.parseColor("#d4ac0d"))
+    private fun updateToggleColors() {
+        binding.btnTypeExpense.setTextColor(Color.parseColor("#e74c3c"))
+        binding.btnTypeIncome.setTextColor(Color.parseColor("#2ecc71"))
+        binding.btnTypeBank.setTextColor(Color.parseColor("#d4ac0d"))
     }
 
     private fun openDatePicker() {
@@ -201,23 +201,14 @@ class HomeFragment : Fragment() {
         binding.tvWallet.text = "${wallet.formatted()}원"
         binding.tvBank.text = "${bank.formatted()}원"
 
-        val (principal, interest) = db.getBankBalancesBreakdown()
         val annualRate = prefs.getInt("bank_interest_rate", 10)
         val dailyInterest = (bank * ((1 + annualRate / 100.0).pow(1.0 / 365) - 1)).toInt()
 
-        if (interest > 0 || dailyInterest > 0) {
-            binding.bankDetailLayout.visibility = View.VISIBLE
-            binding.tvBankPrincipal.text = "원금  ${principal.formatted()}원"
-            binding.tvBankInterest.text = if (interest > 0) "이자 +${interest.formatted()}원 🌟" else ""
-            binding.tvBankRate.text = "연 이자율 ${annualRate}%"
-            if (dailyInterest > 0) {
-                binding.tvDailyInterest.visibility = View.VISIBLE
-                binding.tvDailyInterest.text = "💰 오늘 이자 +${dailyInterest.formatted()}원"
-            } else {
-                binding.tvDailyInterest.visibility = View.GONE
-            }
+        if (dailyInterest > 0) {
+            binding.tvDailyInterest.visibility = View.VISIBLE
+            binding.tvDailyInterest.text = "💰 오늘 이자 +${dailyInterest.formatted()}원"
         } else {
-            binding.bankDetailLayout.visibility = View.GONE
+            binding.tvDailyInterest.visibility = View.INVISIBLE
         }
 
         val streak = db.getRecordingStreak()

@@ -119,28 +119,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:id="@+id/tvBankPrincipal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="9sp"
-                        android:textColor="#888888"/>
-
-                    <TextView
-                        android:id="@+id/tvBankInterest"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="9sp"
-                        android:textColor="#2ecc71"/>
-
-                    <TextView
-                        android:id="@+id/tvBankRate"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="9sp"
-                        android:textColor="#aaaaaa"/>
+                    android:visibility="visible">
 
                     <TextView
                         android:id="@+id/tvDailyInterest"
@@ -148,7 +127,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="9sp"
                         android:textColor="#d4ac0d"
-                        android:visibility="gone"/>
+                        android:visibility="invisible"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -272,7 +251,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="🏦 금고"
+                    android:text="🏦 저축"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>

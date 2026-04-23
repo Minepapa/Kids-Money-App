@@ -287,13 +287,14 @@ class DatabaseHelper(context: Context) :
 
         if (!startMonth.isBefore(currentMonth)) return null
 
+        val monthlyRate = Math.pow(1 + ratePercent / 100.0, 1.0 / 12) - 1
         var month = startMonth
         while (month.isBefore(currentMonth)) {
             val bankBalance = computeBankBalanceUpTo(month.atEndOfMonth())
-            val interest = (bankBalance * ratePercent / 100.0).toInt()
+            val interest = (bankBalance * monthlyRate).toInt()
             if (interest > 0) {
                 val interestDate = month.atEndOfMonth().toString()
-                insertRecord(Record(date = interestDate, type = "interest", memo = "아빠 금고 이자 (월 ${ratePercent}%)", amount = interest))
+                insertRecord(Record(date = interestDate, type = "interest", memo = "아빠 금고 이자 (연 ${ratePercent}%)", amount = interest))
             }
             month = month.plusMonths(1)
         }

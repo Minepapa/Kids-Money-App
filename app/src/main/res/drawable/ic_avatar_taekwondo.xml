@@ -9,64 +9,64 @@
     <path android:fillColor="#FFF8E1"
         android:pathData="M28,2 A26,26 0 1,0 28,54 A26,26 0 1,0 28,2 Z"/>
 
-    <!-- Body (dobok - white uniform) -->
+    <!-- Body (dobok) -->
     <path android:fillColor="#F5F5F5"
-        android:pathData="M20,22 L28,18 L36,22 L34,38 L22,38 Z"/>
+        android:pathData="M22,24 L28,20 L34,24 L32,40 L24,40 Z"/>
 
     <!-- Black belt -->
     <path android:fillColor="#212121"
-        android:pathData="M21,30 L35,30 L35,33 L21,33 Z"/>
+        android:pathData="M23,32 L33,32 L33,35 L23,35 Z"/>
 
-    <!-- Left arm (extended punch) -->
+    <!-- Left arm (punch, fits within circle) -->
     <path android:fillColor="#F5F5F5"
-        android:pathData="M20,22 L8,20 L8,24 L20,26 Z"/>
+        android:pathData="M22,24 L10,22 L10,26 L22,28 Z"/>
 
-    <!-- Right leg (kick pose - raised) -->
+    <!-- Fist (moved right to stay in bounds) -->
+    <path android:fillColor="#FFDAB9"
+        android:pathData="M7,20 A3.5,3.5 0 1,0 7,27 A3.5,3.5 0 1,0 7,20 Z"/>
+
+    <!-- Right leg (kick pose) -->
     <path android:fillColor="#F5F5F5"
-        android:pathData="M34,38 L44,28 L46,31 L36,42 Z"/>
+        android:pathData="M32,40 L42,30 L44,33 L34,44 Z"/>
 
     <!-- Left leg (standing) -->
     <path android:fillColor="#F5F5F5"
-        android:pathData="M22,38 L18,52 L22,52 L26,38 Z"/>
+        android:pathData="M24,40 L20,52 L24,52 L27,40 Z"/>
+
+    <!-- Foot (kick, within bounds) -->
+    <path android:fillColor="#FFDAB9"
+        android:pathData="M41,28 A3.5,3.5 0 1,0 41,35 A3.5,3.5 0 1,0 41,28 Z"/>
 
     <!-- Head -->
     <path android:fillColor="#FFDAB9"
-        android:pathData="M28,6 A8,8 0 1,0 28,22 A8,8 0 1,0 28,6 Z"/>
+        android:pathData="M28,8 A8,8 0 1,0 28,24 A8,8 0 1,0 28,8 Z"/>
 
     <!-- Hair -->
     <path android:fillColor="#2C1810"
-        android:pathData="M20,12 A8,8 0 0,1 36,12 L36,8 C32,2 24,2 20,8 Z"/>
+        android:pathData="M20,14 A8,8 0 0,1 36,14 L36,10 C32,4 24,4 20,10 Z"/>
 
     <!-- Left eye -->
     <path android:fillColor="#2C1810"
-        android:pathData="M24,12 A2,2 0 1,0 24,16 A2,2 0 1,0 24,12 Z"/>
+        android:pathData="M24,14 A2,2 0 1,0 24,18 A2,2 0 1,0 24,14 Z"/>
 
     <!-- Right eye -->
     <path android:fillColor="#2C1810"
-        android:pathData="M32,12 A2,2 0 1,0 32,16 A2,2 0 1,0 32,12 Z"/>
+        android:pathData="M32,14 A2,2 0 1,0 32,18 A2,2 0 1,0 32,14 Z"/>
 
     <!-- Determined mouth -->
     <path android:strokeColor="#CC5555" android:strokeWidth="1.5"
         android:fillColor="#00000000"
-        android:pathData="M25,18 L31,18"/>
+        android:pathData="M25,20 L31,20"/>
 
-    <!-- Fist (left hand) -->
-    <path android:fillColor="#FFDAB9"
-        android:pathData="M5,19 A3.5,3.5 0 1,0 5,26 A3.5,3.5 0 1,0 5,19 Z"/>
-
-    <!-- Foot (right kick) -->
-    <path android:fillColor="#FFDAB9"
-        android:pathData="M44,27 A3.5,3.5 0 1,0 44,34 A3.5,3.5 0 1,0 44,27 Z"/>
-
-    <!-- Motion lines -->
+    <!-- Motion lines (within bounds) -->
     <path android:strokeColor="#FF8F00" android:strokeWidth="1.5"
         android:fillColor="#00000000"
-        android:pathData="M48,24 L52,22"/>
+        android:pathData="M45,26 L49,24"/>
     <path android:strokeColor="#FF8F00" android:strokeWidth="1.5"
         android:fillColor="#00000000"
-        android:pathData="M48,28 L53,28"/>
+        android:pathData="M45,30 L50,30"/>
     <path android:strokeColor="#FF8F00" android:strokeWidth="1.5"
         android:fillColor="#00000000"
-        android:pathData="M48,32 L52,34"/>
+        android:pathData="M45,34 L49,36"/>
 
 </vector>
