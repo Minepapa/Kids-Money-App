@@ -2,6 +2,8 @@ package com.minepapa.kidsmoneyapp
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import android.text.InputType
 import android.view.Gravity
@@ -44,6 +46,10 @@ class HomeFragment : Fragment() {
         binding.etDate.setOnClickListener { openDatePicker() }
 
         binding.typeToggleGroup.check(R.id.btnTypeExpense)
+        updateToggleColors(R.id.btnTypeExpense)
+        binding.typeToggleGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (isChecked) updateToggleColors(checkedId)
+        }
 
         binding.btnAdd.setOnClickListener { addRecord() }
         binding.btnBankSettings.setOnClickListener { checkPinThenOpenSettings() }
@@ -54,6 +60,12 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun updateToggleColors(checkedId: Int) {
+        binding.btnTypeExpense.setTextColor(if (checkedId == R.id.btnTypeExpense) Color.WHITE else Color.parseColor("#e74c3c"))
+        binding.btnTypeIncome.setTextColor(if (checkedId == R.id.btnTypeIncome) Color.WHITE else Color.parseColor("#2ecc71"))
+        binding.btnTypeBank.setTextColor(if (checkedId == R.id.btnTypeBank) Color.WHITE else Color.parseColor("#d4ac0d"))
     }
 
     private fun openDatePicker() {
@@ -201,6 +213,14 @@ class HomeFragment : Fragment() {
         } else {
             binding.tvStreak.visibility = View.GONE
         }
+
+        val dailyInterest = (bank * rate / 100.0 / 30).toInt()
+        if (dailyInterest > 0) {
+            binding.tvDailyInterest.visibility = View.VISIBLE
+            binding.tvDailyInterest.text = "💰 오늘 이자 +${dailyInterest.formatted()}원"
+        } else {
+            binding.tvDailyInterest.visibility = View.GONE
+        }
     }
 
     private fun showDetail(dateStr: String) {
@@ -236,19 +256,20 @@ class HomeFragment : Fragment() {
             }
             row.addView(TextView(requireContext()).apply {
                 text = label; setTextColor(0xFFFFFFFF.toInt()); setBackgroundColor(color)
-                textSize = 9f; setPadding(6, 2, 6, 2)
+                textSize = 13f; setPadding(6, 2, 6, 2)
             })
             row.addView(TextView(requireContext()).apply {
-                text = "  ${r.memo}"; textSize = 11f
+                text = "  ${r.memo}"; textSize = 13f
+                typeface = Typeface.DEFAULT_BOLD
                 layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
             })
             row.addView(TextView(requireContext()).apply {
                 text = "${r.amount.formatted()}원"; setTextColor(color)
-                textSize = 11f; typeface = android.graphics.Typeface.DEFAULT_BOLD
+                textSize = 13f; typeface = Typeface.DEFAULT_BOLD
             })
             if (r.type != "interest") {
-                row.addView(Button(requireContext()).apply {
-                    text = "X"; textSize = 9f; setPadding(8, 2, 8, 2)
+                row.addView(TextView(requireContext()).apply {
+                    text = "🗑️"; textSize = 16f; setPadding(8, 2, 8, 2)
                     setOnClickListener { db.deleteRecord(r.id); render(); showDetail(dateStr) }
                 })
             }

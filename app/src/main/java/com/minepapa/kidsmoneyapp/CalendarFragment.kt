@@ -1,6 +1,7 @@
 package com.minepapa.kidsmoneyapp
 
 import android.content.res.Resources
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -50,9 +51,9 @@ class CalendarFragment : Fragment() {
                 "tobank", "direct_in", "interest" -> mBnk += it.amount
             }
         }
-        binding.tvMonthInc.text = "📈 수입\n${mInc.formatted()}원"
-        binding.tvMonthExp.text = "📉 지출\n${mExp.formatted()}원"
-        binding.tvMonthBnk.text = "🏦 저축\n${mBnk.formatted()}원"
+        binding.tvMonthInc.text = "📈 수입\n\n${mInc.formatted()}원"
+        binding.tvMonthExp.text = "📉 지출\n\n${mExp.formatted()}원"
+        binding.tvMonthBnk.text = "🏦 저축\n\n${mBnk.formatted()}원"
 
         buildCalendar()
     }
@@ -69,7 +70,7 @@ class CalendarFragment : Fragment() {
             val tv = TextView(requireContext()).apply {
                 text = d
                 gravity = Gravity.CENTER
-                textSize = 10f
+                textSize = 13f
                 setTypeface(null, android.graphics.Typeface.BOLD)
                 layoutParams = GridLayout.LayoutParams().apply {
                     width = 0
@@ -121,22 +122,22 @@ class CalendarFragment : Fragment() {
 
             cell.addView(TextView(requireContext()).apply {
                 text = "$d"
-                textSize = 9f
+                textSize = 12f
                 typeface = android.graphics.Typeface.DEFAULT_BOLD
             })
             if (dInc > 0) cell.addView(TextView(requireContext()).apply {
                 text = "📈${dInc.formatted()}"
-                textSize = 7f
+                textSize = 10f
                 setTextColor(0xFF2ecc71.toInt())
             })
             if (dExp > 0) cell.addView(TextView(requireContext()).apply {
                 text = "📉${dExp.formatted()}"
-                textSize = 7f
+                textSize = 10f
                 setTextColor(0xFFe74c3c.toInt())
             })
             if (dBnk > 0) cell.addView(TextView(requireContext()).apply {
                 text = "🏦${dBnk.formatted()}"
-                textSize = 7f
+                textSize = 10f
                 setTextColor(0xFFd4ac0d.toInt())
             })
 
@@ -177,18 +178,19 @@ class CalendarFragment : Fragment() {
             }
             row.addView(TextView(requireContext()).apply {
                 text = label; setTextColor(0xFFFFFFFF.toInt()); setBackgroundColor(color)
-                textSize = 9f; setPadding(6, 2, 6, 2)
+                textSize = 13f; setPadding(6, 2, 6, 2)
             })
             row.addView(TextView(requireContext()).apply {
-                text = "  ${r.memo}"; textSize = 11f
+                text = "  ${r.memo}"; textSize = 13f
+                typeface = Typeface.DEFAULT_BOLD
                 layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
             })
             row.addView(TextView(requireContext()).apply {
                 text = "${r.amount.formatted()}원"; setTextColor(color)
-                textSize = 11f; typeface = android.graphics.Typeface.DEFAULT_BOLD
+                textSize = 13f; typeface = Typeface.DEFAULT_BOLD
             })
-            row.addView(Button(requireContext()).apply {
-                text = "X"; textSize = 9f; setPadding(8, 2, 8, 2)
+            row.addView(TextView(requireContext()).apply {
+                text = "🗑️"; textSize = 16f; setPadding(8, 2, 8, 2)
                 setOnClickListener { db.deleteRecord(r.id); render(); showDetail(dateStr) }
             })
             binding.llDayList.addView(row)

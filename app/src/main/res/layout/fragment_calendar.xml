@@ -64,7 +64,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:textColor="#2ecc71"
-                android:textSize="10sp"/>
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:lineSpacingExtra="4dp"/>
 
             <TextView
                 android:id="@+id/tvMonthExp"
@@ -73,7 +75,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:textColor="#e74c3c"
-                android:textSize="10sp"/>
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:lineSpacingExtra="4dp"/>
 
             <TextView
                 android:id="@+id/tvMonthBnk"
@@ -82,7 +86,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:textColor="#d4ac0d"
-                android:textSize="10sp"/>
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:lineSpacingExtra="4dp"/>
 
         </LinearLayout>
 
@@ -101,7 +107,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:paddingBottom="6dp"/>
 
             <LinearLayout
