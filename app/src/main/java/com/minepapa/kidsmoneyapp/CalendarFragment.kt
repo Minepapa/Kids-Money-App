@@ -51,9 +51,9 @@ class CalendarFragment : Fragment() {
                 "tobank", "direct_in", "interest" -> mBnk += it.amount
             }
         }
-        binding.tvMonthInc.text = "📈 수입\n\n${mInc.formatted()}원"
-        binding.tvMonthExp.text = "📉 지출\n\n${mExp.formatted()}원"
-        binding.tvMonthBnk.text = "🏦 저축\n\n${mBnk.formatted()}원"
+        binding.tvMonthInc.text = "📈 수입\n${mInc.formatted()}원"
+        binding.tvMonthExp.text = "📉 지출\n${mExp.formatted()}원"
+        binding.tvMonthBnk.text = "🏦 저축\n${mBnk.formatted()}원"
 
         buildCalendar()
     }

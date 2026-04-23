@@ -54,9 +54,10 @@
             </LinearLayout>
 
             <ImageView
+                android:id="@+id/ivProfileAvatar"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                android:src="@drawable/ic_profile_cartoon"
+                android:src="@drawable/ic_avatar_girl"
                 android:scaleType="fitCenter"
                 android:layout_marginStart="8dp"
                 android:contentDescription="@null"/>
@@ -140,6 +141,14 @@
                         android:layout_height="wrap_content"
                         android:textSize="9sp"
                         android:textColor="#aaaaaa"/>
+
+                    <TextView
+                        android:id="@+id/tvDailyInterest"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="9sp"
+                        android:textColor="#d4ac0d"
+                        android:visibility="gone"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -179,11 +188,11 @@
                     android:visibility="gone"/>
 
                 <TextView
-                    android:id="@+id/tvDailyInterest"
+                    android:id="@+id/tvLatestBadge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="9sp"
-                    android:textColor="#d4ac0d"
+                    android:textColor="#9b59b6"
                     android:visibility="gone"/>
             </LinearLayout>
 
@@ -239,21 +248,21 @@
                 android:layout_marginBottom="10dp">
 
                 <Button
-                    android:id="@+id/btnTypeExpense"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="📉 지출"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
-
-                <Button
                     android:id="@+id/btnTypeIncome"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="📈 수입"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+                <Button
+                    android:id="@+id/btnTypeExpense"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="📉 지출"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>

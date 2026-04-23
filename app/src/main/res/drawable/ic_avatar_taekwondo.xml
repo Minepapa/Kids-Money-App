@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="56dp"
+    android:height="56dp"
+    android:viewportWidth="56"
+    android:viewportHeight="56">
+
+    <!-- Background circle -->
+    <path android:fillColor="#FFF8E1"
+        android:pathData="M28,2 A26,26 0 1,0 28,54 A26,26 0 1,0 28,2 Z"/>
+
+    <!-- Body (dobok - white uniform) -->
+    <path android:fillColor="#F5F5F5"
+        android:pathData="M20,22 L28,18 L36,22 L34,38 L22,38 Z"/>
+
+    <!-- Black belt -->
+    <path android:fillColor="#212121"
+        android:pathData="M21,30 L35,30 L35,33 L21,33 Z"/>
+
+    <!-- Left arm (extended punch) -->
+    <path android:fillColor="#F5F5F5"
+        android:pathData="M20,22 L8,20 L8,24 L20,26 Z"/>
+
+    <!-- Right leg (kick pose - raised) -->
+    <path android:fillColor="#F5F5F5"
+        android:pathData="M34,38 L44,28 L46,31 L36,42 Z"/>
+
+    <!-- Left leg (standing) -->
+    <path android:fillColor="#F5F5F5"
+        android:pathData="M22,38 L18,52 L22,52 L26,38 Z"/>
+
+    <!-- Head -->
+    <path android:fillColor="#FFDAB9"
+        android:pathData="M28,6 A8,8 0 1,0 28,22 A8,8 0 1,0 28,6 Z"/>
+
+    <!-- Hair -->
+    <path android:fillColor="#2C1810"
+        android:pathData="M20,12 A8,8 0 0,1 36,12 L36,8 C32,2 24,2 20,8 Z"/>
+
+    <!-- Left eye -->
+    <path android:fillColor="#2C1810"
+        android:pathData="M24,12 A2,2 0 1,0 24,16 A2,2 0 1,0 24,12 Z"/>
+
+    <!-- Right eye -->
+    <path android:fillColor="#2C1810"
+        android:pathData="M32,12 A2,2 0 1,0 32,16 A2,2 0 1,0 32,12 Z"/>
+
+    <!-- Determined mouth -->
+    <path android:strokeColor="#CC5555" android:strokeWidth="1.5"
+        android:fillColor="#00000000"
+        android:pathData="M25,18 L31,18"/>
+
+    <!-- Fist (left hand) -->
+    <path android:fillColor="#FFDAB9"
+        android:pathData="M5,19 A3.5,3.5 0 1,0 5,26 A3.5,3.5 0 1,0 5,19 Z"/>
+
+    <!-- Foot (right kick) -->
+    <path android:fillColor="#FFDAB9"
+        android:pathData="M44,27 A3.5,3.5 0 1,0 44,34 A3.5,3.5 0 1,0 44,27 Z"/>
+
+    <!-- Motion lines -->
+    <path android:strokeColor="#FF8F00" android:strokeWidth="1.5"
+        android:fillColor="#00000000"
+        android:pathData="M48,24 L52,22"/>
+    <path android:strokeColor="#FF8F00" android:strokeWidth="1.5"
+        android:fillColor="#00000000"
+        android:pathData="M48,28 L53,28"/>
+    <path android:strokeColor="#FF8F00" android:strokeWidth="1.5"
+        android:fillColor="#00000000"
+        android:pathData="M48,32 L52,34"/>
+
+</vector>

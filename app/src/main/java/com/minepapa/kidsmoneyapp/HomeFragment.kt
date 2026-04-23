@@ -19,6 +19,7 @@ import com.minepapa.kidsmoneyapp.databinding.FragmentHomeBinding
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+import kotlin.math.pow
 
 class HomeFragment : Fragment() {
 
@@ -54,6 +55,12 @@ class HomeFragment : Fragment() {
         binding.btnAdd.setOnClickListener { addRecord() }
         binding.btnBankSettings.setOnClickListener { checkPinThenOpenSettings() }
 
+        loadAvatar()
+        binding.ivProfileAvatar.setOnLongClickListener {
+            showAvatarPicker()
+            true
+        }
+
         render()
     }
 
@@ -63,9 +70,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun updateToggleColors(checkedId: Int) {
-        binding.btnTypeExpense.setTextColor(if (checkedId == R.id.btnTypeExpense) Color.WHITE else Color.parseColor("#e74c3c"))
-        binding.btnTypeIncome.setTextColor(if (checkedId == R.id.btnTypeIncome) Color.WHITE else Color.parseColor("#2ecc71"))
-        binding.btnTypeBank.setTextColor(if (checkedId == R.id.btnTypeBank) Color.WHITE else Color.parseColor("#d4ac0d"))
+        binding.btnTypeExpense.setTextColor(if (checkedId == R.id.btnTypeExpense) Color.BLACK else Color.parseColor("#e74c3c"))
+        binding.btnTypeIncome.setTextColor(if (checkedId == R.id.btnTypeIncome) Color.BLACK else Color.parseColor("#2ecc71"))
+        binding.btnTypeBank.setTextColor(if (checkedId == R.id.btnTypeBank) Color.BLACK else Color.parseColor("#d4ac0d"))
     }
 
     private fun openDatePicker() {
@@ -195,15 +202,22 @@ class HomeFragment : Fragment() {
         binding.tvBank.text = "${bank.formatted()}원"
 
         val (principal, interest) = db.getBankBalancesBreakdown()
-        val rate = prefs.getInt("bank_interest_rate", 10)
-        if (interest > 0) {
+        val annualRate = prefs.getInt("bank_interest_rate", 10)
+        val dailyInterest = (bank * ((1 + annualRate / 100.0).pow(1.0 / 365) - 1)).toInt()
+
+        if (interest > 0 || dailyInterest > 0) {
             binding.bankDetailLayout.visibility = View.VISIBLE
             binding.tvBankPrincipal.text = "원금  ${principal.formatted()}원"
-            binding.tvBankInterest.text = "이자 +${interest.formatted()}원 🌟"
-            binding.tvBankRate.text = "월 이자율 ${rate}%"
+            binding.tvBankInterest.text = if (interest > 0) "이자 +${interest.formatted()}원 🌟" else ""
+            binding.tvBankRate.text = "연 이자율 ${annualRate}%"
+            if (dailyInterest > 0) {
+                binding.tvDailyInterest.visibility = View.VISIBLE
+                binding.tvDailyInterest.text = "💰 오늘 이자 +${dailyInterest.formatted()}원"
+            } else {
+                binding.tvDailyInterest.visibility = View.GONE
+            }
         } else {
             binding.bankDetailLayout.visibility = View.GONE
-            binding.tvBankRate.text = "월 이자율 ${rate}%"
         }
 
         val streak = db.getRecordingStreak()
@@ -214,13 +228,48 @@ class HomeFragment : Fragment() {
             binding.tvStreak.visibility = View.GONE
         }
 
-        val dailyInterest = (bank * rate / 100.0 / 30).toInt()
-        if (dailyInterest > 0) {
-            binding.tvDailyInterest.visibility = View.VISIBLE
-            binding.tvDailyInterest.text = "💰 오늘 이자 +${dailyInterest.formatted()}원"
+        val currentMonth = java.time.YearMonth.now().toString()
+        val latestId = db.getLatestUnlockedAchievementId(currentMonth)
+        val latestBadge = latestId?.let { id -> AchievementManager.catalog.find { it.id == id } }
+        if (latestBadge != null) {
+            binding.tvLatestBadge.visibility = View.VISIBLE
+            binding.tvLatestBadge.text = "${latestBadge.emoji} ${latestBadge.titleKo} 획득!"
         } else {
-            binding.tvDailyInterest.visibility = View.GONE
+            binding.tvLatestBadge.visibility = View.GONE
         }
+    }
+
+    private val avatarDrawables = mapOf(
+        "girl"       to R.drawable.ic_avatar_girl,
+        "boy"        to R.drawable.ic_avatar_boy,
+        "squid"      to R.drawable.ic_avatar_squid,
+        "dog"        to R.drawable.ic_avatar_dog,
+        "tree"       to R.drawable.ic_avatar_tree,
+        "mic"        to R.drawable.ic_avatar_mic,
+        "taekwondo"  to R.drawable.ic_avatar_taekwondo
+    )
+
+    private val avatarLabels = listOf(
+        "girl" to "여자아이", "boy" to "남자아이", "squid" to "오징어",
+        "dog" to "강아지", "tree" to "나무", "mic" to "마이크", "taekwondo" to "태권도"
+    )
+
+    private fun loadAvatar() {
+        val key = prefs.getString("selected_avatar", "girl") ?: "girl"
+        val resId = avatarDrawables[key] ?: R.drawable.ic_avatar_girl
+        binding.ivProfileAvatar.setImageResource(resId)
+    }
+
+    private fun showAvatarPicker() {
+        val labels = avatarLabels.map { it.second }.toTypedArray()
+        AlertDialog.Builder(requireContext())
+            .setTitle("프로필 선택")
+            .setItems(labels) { _, which ->
+                val key = avatarLabels[which].first
+                prefs.edit().putString("selected_avatar", key).apply()
+                loadAvatar()
+            }
+            .show()
     }
 
     private fun showDetail(dateStr: String) {

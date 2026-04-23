@@ -16,9 +16,11 @@ class BadgeAdapter(
             binding.tvBadgeName.text = achievement.titleKo
             if (achievement.isUnlocked) {
                 binding.root.alpha = 1.0f
+                binding.root.setBackgroundColor(0xFFFFF9E6.toInt())
                 binding.tvBadgeName.setTextColor(0xFF333333.toInt())
             } else {
-                binding.root.alpha = 0.3f
+                binding.root.alpha = 0.12f
+                binding.root.setBackgroundColor(0xFFFFFFFF.toInt())
                 binding.tvBadgeName.setTextColor(0xFF999999.toInt())
             }
 

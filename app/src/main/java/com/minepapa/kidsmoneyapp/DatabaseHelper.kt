@@ -264,6 +264,15 @@ class DatabaseHelper(context: Context) :
         writableDatabase.update("achievements", values, "id=? AND month=?", arrayOf(id, month))
     }
 
+    fun getLatestUnlockedAchievementId(month: String): String? {
+        readableDatabase.query(
+            "achievements", arrayOf("id"),
+            "month=? AND unlocked_date IS NOT NULL", arrayOf(month),
+            null, null, "unlocked_date DESC", "1"
+        ).use { if (it.moveToFirst()) return it.getString(0) }
+        return null
+    }
+
     // ── Interest ──────────────────────────────────────────────────────────────
 
     fun applyMonthlyInterestIfNeeded(ratePercent: Int, lastInterestMonth: String?): String? {
