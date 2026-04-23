@@ -1,6 +1,5 @@
 package com.minepapa.kidsmoneyapp
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -122,9 +121,9 @@ class GoalsFragment : Fragment() {
         if (bnk > 0) entries.add(PieEntry(bnk, "저축"))
 
         val colors = mutableListOf<Int>()
-        if (inc > 0) colors.add(Color.parseColor("#2ecc71"))
-        if (exp > 0) colors.add(Color.parseColor("#e74c3c"))
-        if (bnk > 0) colors.add(Color.parseColor("#d4ac0d"))
+        if (inc > 0) colors.add(requireContext().getColor(R.color.color_income))
+        if (exp > 0) colors.add(requireContext().getColor(R.color.color_expense))
+        if (bnk > 0) colors.add(requireContext().getColor(R.color.color_bank))
 
         val dataSet = PieDataSet(entries, "").apply {
             this.colors = colors

@@ -13,12 +13,15 @@ class BadgeAdapter(
         fun bind(achievement: Achievement) {
             binding.tvBadgeEmoji.text = achievement.emoji
             binding.tvBadgeName.text = achievement.titleKo
+            val ctx = binding.root.context
             if (achievement.isUnlocked) {
                 binding.root.alpha = 1.0f
-                binding.tvBadgeName.setTextColor(0xFF333333.toInt())
+                binding.root.background = ctx.getDrawable(R.drawable.bg_badge_unlocked)
+                binding.tvBadgeName.setTextColor(ctx.getColor(R.color.sb_text_primary))
             } else {
-                binding.root.alpha = 0.3f
-                binding.tvBadgeName.setTextColor(0xFF999999.toInt())
+                binding.root.alpha = 0.35f
+                binding.root.setBackgroundColor(ctx.getColor(R.color.sb_white))
+                binding.tvBadgeName.setTextColor(ctx.getColor(R.color.sb_text_hint))
             }
         }
     }

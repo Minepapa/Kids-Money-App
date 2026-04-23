@@ -2,6 +2,8 @@ package com.minepapa.kidsmoneyapp
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -193,7 +195,7 @@ class HomeFragment : Fragment() {
         if (records.isEmpty()) {
             val tv = TextView(requireContext())
             tv.text = "내역 없음"
-            tv.setTextColor(0xFF999999.toInt())
+            tv.setTextColor(requireContext().getColor(R.color.sb_text_hint))
             binding.llDayList.addView(tv)
             return
         }
@@ -202,12 +204,13 @@ class HomeFragment : Fragment() {
             val row = LinearLayout(requireContext()).apply {
                 orientation = LinearLayout.HORIZONTAL
                 gravity = Gravity.CENTER_VERTICAL
-                setPadding(0, 6, 0, 6)
+                setPadding(0, 8, 0, 8)
             }
+            val ctx = requireContext()
             val color = when {
-                r.isIncome -> 0xFF2ecc71.toInt()
-                r.isExpense -> 0xFFe74c3c.toInt()
-                else -> 0xFFd4ac0d.toInt()
+                r.isIncome  -> ctx.getColor(R.color.color_income)
+                r.isExpense -> ctx.getColor(R.color.color_expense)
+                else        -> ctx.getColor(R.color.color_bank)
             }
             val label = when {
                 r.isIncome -> "수입"
@@ -215,21 +218,32 @@ class HomeFragment : Fragment() {
                 r.type == "interest" -> "이자"
                 else -> "금고"
             }
-            row.addView(TextView(requireContext()).apply {
-                text = label; setTextColor(0xFFFFFFFF.toInt()); setBackgroundColor(color)
-                textSize = 9f; setPadding(6, 2, 6, 2)
+            row.addView(TextView(ctx).apply {
+                text = label
+                setTextColor(ctx.getColor(R.color.sb_white))
+                background = ctx.getDrawable(R.drawable.bg_label_pill)
+                backgroundTintList = ColorStateList.valueOf(color)
+                textSize = 11f
+                setPadding(14, 5, 14, 5)
             })
-            row.addView(TextView(requireContext()).apply {
-                text = "  ${r.memo}"; textSize = 11f
+            row.addView(TextView(ctx).apply {
+                text = "  ${r.memo}"
+                textSize = 13f
+                typeface = Typeface.DEFAULT_BOLD
+                setTextColor(ctx.getColor(R.color.sb_text_primary))
                 layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
             })
-            row.addView(TextView(requireContext()).apply {
-                text = "${r.amount.formatted()}원"; setTextColor(color)
-                textSize = 11f; typeface = android.graphics.Typeface.DEFAULT_BOLD
+            row.addView(TextView(ctx).apply {
+                text = "${r.amount.formatted()}원"
+                setTextColor(color)
+                textSize = 13f
+                typeface = Typeface.DEFAULT_BOLD
             })
             if (r.type != "interest") {
-                row.addView(Button(requireContext()).apply {
-                    text = "X"; textSize = 9f; setPadding(8, 2, 8, 2)
+                row.addView(TextView(ctx).apply {
+                    text = "🗑️"
+                    textSize = 16f
+                    setPadding(10, 2, 4, 2)
                     setOnClickListener { db.deleteRecord(r.id); render(); showDetail(dateStr) }
                 })
             }

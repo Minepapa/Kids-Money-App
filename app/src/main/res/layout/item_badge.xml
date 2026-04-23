@@ -4,15 +4,15 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="8dp"
+    android:padding="10dp"
     android:layout_margin="4dp"
-    android:background="#FFFFFF">
+    android:background="@color/sb_white">
 
     <TextView
         android:id="@+id/tvBadgeEmoji"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
+        android:textSize="32sp"
         android:gravity="center"
         android:padding="4dp"/>
 
@@ -20,9 +20,9 @@
         android:id="@+id/tvBadgeName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="9sp"
+        android:textSize="10sp"
         android:gravity="center"
         android:maxLines="2"
-        android:textColor="#555555"/>
+        android:textColor="@color/sb_text_secondary"/>
 
 </LinearLayout>
