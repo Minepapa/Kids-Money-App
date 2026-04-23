@@ -7,8 +7,9 @@
 
     <TextView
         android:text="새 저축 목표"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:textStyle="bold"
+        android:textColor="@color/sb_text_primary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"/>
@@ -18,7 +19,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="무엇을 살까요? (예: 레고, 게임)"
-        android:textColorHint="#CCCCCC"
+        android:textColorHint="@color/sb_text_hint"
+        android:textColor="@color/sb_text_primary"
+        android:background="@drawable/bg_input_field"
+        android:padding="14dp"
         android:layout_marginBottom="12dp"/>
 
     <EditText
@@ -26,7 +30,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="얼마가 필요해요? (원)"
-        android:textColorHint="#CCCCCC"
+        android:textColorHint="@color/sb_text_hint"
+        android:textColor="@color/sb_text_primary"
+        android:background="@drawable/bg_input_field"
+        android:padding="14dp"
         android:inputType="number"/>
 
 </LinearLayout>

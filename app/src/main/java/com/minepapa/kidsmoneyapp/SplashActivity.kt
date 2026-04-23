@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.statusBarColor = getColor(R.color.sb_dark_green)
         setContentView(R.layout.activity_splash)
         val title = findViewById<TextView>(R.id.tvSplashTitle)
         title.startAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_in))

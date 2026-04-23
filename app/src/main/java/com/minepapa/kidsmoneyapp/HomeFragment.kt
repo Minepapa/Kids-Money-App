@@ -2,6 +2,7 @@ package com.minepapa.kidsmoneyapp
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -70,9 +71,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun updateToggleColors() {
-        binding.btnTypeExpense.setTextColor(Color.parseColor("#e74c3c"))
-        binding.btnTypeIncome.setTextColor(Color.parseColor("#2ecc71"))
-        binding.btnTypeBank.setTextColor(Color.parseColor("#d4ac0d"))
+        val ctx = requireContext()
+        binding.btnTypeExpense.setTextColor(ctx.getColor(R.color.color_expense))
+        binding.btnTypeIncome.setTextColor(ctx.getColor(R.color.color_income))
+        binding.btnTypeBank.setTextColor(ctx.getColor(R.color.color_bank))
     }
 
     private fun openDatePicker() {
@@ -272,21 +274,22 @@ class HomeFragment : Fragment() {
         if (records.isEmpty()) {
             val tv = TextView(requireContext())
             tv.text = "내역 없음"
-            tv.setTextColor(0xFF999999.toInt())
+            tv.setTextColor(requireContext().getColor(R.color.sb_text_hint))
             binding.llDayList.addView(tv)
             return
         }
 
+        val ctx = requireContext()
         records.forEach { r ->
-            val row = LinearLayout(requireContext()).apply {
+            val row = LinearLayout(ctx).apply {
                 orientation = LinearLayout.HORIZONTAL
                 gravity = Gravity.CENTER_VERTICAL
                 setPadding(0, 6, 0, 6)
             }
             val color = when {
-                r.isIncome -> 0xFF2ecc71.toInt()
-                r.isExpense -> 0xFFe74c3c.toInt()
-                else -> 0xFFd4ac0d.toInt()
+                r.isIncome -> ctx.getColor(R.color.color_income)
+                r.isExpense -> ctx.getColor(R.color.color_expense)
+                else -> ctx.getColor(R.color.color_bank)
             }
             val label = when {
                 r.isIncome -> "수입"
@@ -294,21 +297,25 @@ class HomeFragment : Fragment() {
                 r.type == "interest" -> "이자"
                 else -> "금고"
             }
-            row.addView(TextView(requireContext()).apply {
-                text = label; setTextColor(0xFFFFFFFF.toInt()); setBackgroundColor(color)
-                textSize = 13f; setPadding(6, 2, 6, 2)
+            row.addView(TextView(ctx).apply {
+                text = label
+                setTextColor(Color.WHITE)
+                background = ctx.getDrawable(R.drawable.bg_label_pill)
+                backgroundTintList = ColorStateList.valueOf(color)
+                textSize = 13f
+                setPadding(12, 4, 12, 4)
             })
-            row.addView(TextView(requireContext()).apply {
+            row.addView(TextView(ctx).apply {
                 text = "  ${r.memo}"; textSize = 13f
                 typeface = Typeface.DEFAULT_BOLD
                 layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
             })
-            row.addView(TextView(requireContext()).apply {
+            row.addView(TextView(ctx).apply {
                 text = "${r.amount.formatted()}원"; setTextColor(color)
                 textSize = 13f; typeface = Typeface.DEFAULT_BOLD
             })
             if (r.type != "interest") {
-                row.addView(TextView(requireContext()).apply {
+                row.addView(TextView(ctx).apply {
                     text = "🗑️"; textSize = 16f; setPadding(8, 2, 8, 2)
                     setOnClickListener { db.deleteRecord(r.id); render(); showDetail(dateStr) }
                 })
