@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.KidsMoneyApp" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <item name="colorPrimary">#4a90e2</item>
-        <item name="colorPrimaryDark">#357abd</item>
-        <item name="colorAccent">#2ecc71</item>
+    <style name="Theme.KidsMoneyApp" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/sb_medium_green</item>
+        <item name="colorPrimaryVariant">@color/sb_dark_green</item>
+        <item name="colorOnPrimary">@color/sb_white</item>
+        <item name="colorSecondary">@color/sb_gold</item>
+        <item name="colorOnSecondary">@color/sb_white</item>
+        <item name="android:windowBackground">@color/sb_cream</item>
+        <item name="colorSurface">@color/sb_white</item>
+        <item name="colorOnSurface">@color/sb_text_primary</item>
     </style>
 </resources>

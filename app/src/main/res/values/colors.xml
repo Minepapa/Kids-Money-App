@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
+    <!-- Starbucks design language palette -->
+    <color name="sb_dark_green">#1E3932</color>
+    <color name="sb_medium_green">#00704A</color>
+    <color name="sb_light_green">#D4E9E2</color>
+    <color name="sb_cream">#F2F0EB</color>
+    <color name="sb_gold">#CBA258</color>
+    <color name="sb_gold_light">#F5EDD8</color>
+    <color name="sb_red">#C0392B</color>
+    <color name="sb_red_light">#FAEAEA</color>
+    <color name="sb_white">#FFFFFF</color>
+    <color name="sb_off_white">#FAF9F7</color>
+    <color name="sb_text_primary">#1E3932</color>
+    <color name="sb_text_secondary">#5C6E68</color>
+    <color name="sb_text_hint">#A0ADA9</color>
+    <color name="sb_text_on_dark">#FFFFFF</color>
+    <color name="sb_text_on_dark_soft">#B8D0C8</color>
+    <color name="sb_nav_active">#00704A</color>
+    <color name="sb_nav_inactive">#A0ADA9</color>
+    <color name="color_income">#00704A</color>
+    <color name="color_expense">#C0392B</color>
+    <color name="color_bank">#CBA258</color>
+
+    <!-- legacy system colors kept for compatibility -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="primary">#4a90e2</color>
-    <color name="income">#2ecc71</color>
-    <color name="expense">#e74c3c</color>
-    <color name="bank">#d4ac0d</color>
-    <color name="surface">#FDFBFF</color>
-    <color name="on_surface">#1C1B1F</color>
-    <color name="progress_track">#E8F5E9</color>
-    <color name="badge_locked">#CCCCCC</color>
-    <color name="chip_selected_expense">#FFEBEE</color>
-    <color name="chip_selected_income">#E8F5E9</color>
-    <color name="chip_selected_bank">#FFF9E6</color>
-    <color name="interest">#27ae60</color>
-    <color name="card_wallet">#F5FAFF</color>
-    <color name="card_bank">#FFF9E6</color>
-    <color name="bottom_nav_bg">#FFFFFF</color>
 </resources>

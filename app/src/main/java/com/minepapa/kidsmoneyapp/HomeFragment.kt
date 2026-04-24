@@ -2,6 +2,7 @@ package com.minepapa.kidsmoneyapp
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -19,6 +20,7 @@ import com.minepapa.kidsmoneyapp.databinding.FragmentHomeBinding
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+import kotlin.math.pow
 
 class HomeFragment : Fragment() {
 
@@ -46,13 +48,19 @@ class HomeFragment : Fragment() {
         binding.etDate.setOnClickListener { openDatePicker() }
 
         binding.typeToggleGroup.check(R.id.btnTypeExpense)
-        updateToggleColors(R.id.btnTypeExpense)
-        binding.typeToggleGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
-            if (isChecked) updateToggleColors(checkedId)
+        updateToggleColors()
+        binding.typeToggleGroup.addOnButtonCheckedListener { _, _, isChecked ->
+            if (isChecked) updateToggleColors()
         }
 
         binding.btnAdd.setOnClickListener { addRecord() }
         binding.btnBankSettings.setOnClickListener { checkPinThenOpenSettings() }
+
+        loadAvatar()
+        binding.ivProfileAvatar.setOnLongClickListener {
+            showAvatarPicker()
+            true
+        }
 
         render()
     }
@@ -62,10 +70,11 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-    private fun updateToggleColors(checkedId: Int) {
-        binding.btnTypeExpense.setTextColor(if (checkedId == R.id.btnTypeExpense) Color.WHITE else Color.parseColor("#e74c3c"))
-        binding.btnTypeIncome.setTextColor(if (checkedId == R.id.btnTypeIncome) Color.WHITE else Color.parseColor("#2ecc71"))
-        binding.btnTypeBank.setTextColor(if (checkedId == R.id.btnTypeBank) Color.WHITE else Color.parseColor("#d4ac0d"))
+    private fun updateToggleColors() {
+        val ctx = requireContext()
+        binding.btnTypeExpense.setTextColor(ctx.getColor(R.color.color_expense))
+        binding.btnTypeIncome.setTextColor(ctx.getColor(R.color.color_income))
+        binding.btnTypeBank.setTextColor(ctx.getColor(R.color.color_bank))
     }
 
     private fun openDatePicker() {
@@ -194,16 +203,14 @@ class HomeFragment : Fragment() {
         binding.tvWallet.text = "${wallet.formatted()}원"
         binding.tvBank.text = "${bank.formatted()}원"
 
-        val (principal, interest) = db.getBankBalancesBreakdown()
-        val rate = prefs.getInt("bank_interest_rate", 10)
-        if (interest > 0) {
-            binding.bankDetailLayout.visibility = View.VISIBLE
-            binding.tvBankPrincipal.text = "원금  ${principal.formatted()}원"
-            binding.tvBankInterest.text = "이자 +${interest.formatted()}원 🌟"
-            binding.tvBankRate.text = "월 이자율 ${rate}%"
+        val annualRate = prefs.getInt("bank_interest_rate", 10)
+        val dailyInterest = (bank * ((1 + annualRate / 100.0).pow(1.0 / 365) - 1)).toInt()
+
+        if (dailyInterest > 0) {
+            binding.tvDailyInterest.visibility = View.VISIBLE
+            binding.tvDailyInterest.text = "💰 오늘 이자 +${dailyInterest.formatted()}원"
         } else {
-            binding.bankDetailLayout.visibility = View.GONE
-            binding.tvBankRate.text = "월 이자율 ${rate}%"
+            binding.tvDailyInterest.visibility = View.INVISIBLE
         }
 
         val streak = db.getRecordingStreak()
@@ -214,13 +221,48 @@ class HomeFragment : Fragment() {
             binding.tvStreak.visibility = View.GONE
         }
 
-        val dailyInterest = (bank * rate / 100.0 / 30).toInt()
-        if (dailyInterest > 0) {
-            binding.tvDailyInterest.visibility = View.VISIBLE
-            binding.tvDailyInterest.text = "💰 오늘 이자 +${dailyInterest.formatted()}원"
+        val currentMonth = java.time.YearMonth.now().toString()
+        val latestId = db.getLatestUnlockedAchievementId(currentMonth)
+        val latestBadge = latestId?.let { id -> AchievementManager.catalog.find { it.id == id } }
+        if (latestBadge != null) {
+            binding.tvLatestBadge.visibility = View.VISIBLE
+            binding.tvLatestBadge.text = "${latestBadge.emoji} ${latestBadge.titleKo} 획득!"
         } else {
-            binding.tvDailyInterest.visibility = View.GONE
+            binding.tvLatestBadge.visibility = View.GONE
         }
+    }
+
+    private val avatarDrawables = mapOf(
+        "girl"       to R.drawable.ic_avatar_girl,
+        "boy"        to R.drawable.ic_avatar_boy,
+        "squid"      to R.drawable.ic_avatar_squid,
+        "dog"        to R.drawable.ic_avatar_dog,
+        "tree"       to R.drawable.ic_avatar_tree,
+        "mic"        to R.drawable.ic_avatar_mic,
+        "taekwondo"  to R.drawable.ic_avatar_taekwondo
+    )
+
+    private val avatarLabels = listOf(
+        "girl" to "여자아이", "boy" to "남자아이", "squid" to "오징어",
+        "dog" to "강아지", "tree" to "나무", "mic" to "마이크", "taekwondo" to "태권도"
+    )
+
+    private fun loadAvatar() {
+        val key = prefs.getString("selected_avatar", "girl") ?: "girl"
+        val resId = avatarDrawables[key] ?: R.drawable.ic_avatar_girl
+        binding.ivProfileAvatar.setImageResource(resId)
+    }
+
+    private fun showAvatarPicker() {
+        val labels = avatarLabels.map { it.second }.toTypedArray()
+        AlertDialog.Builder(requireContext())
+            .setTitle("프로필 선택")
+            .setItems(labels) { _, which ->
+                val key = avatarLabels[which].first
+                prefs.edit().putString("selected_avatar", key).apply()
+                loadAvatar()
+            }
+            .show()
     }
 
     private fun showDetail(dateStr: String) {
@@ -232,21 +274,22 @@ class HomeFragment : Fragment() {
         if (records.isEmpty()) {
             val tv = TextView(requireContext())
             tv.text = "내역 없음"
-            tv.setTextColor(0xFF999999.toInt())
+            tv.setTextColor(requireContext().getColor(R.color.sb_text_hint))
             binding.llDayList.addView(tv)
             return
         }
 
+        val ctx = requireContext()
         records.forEach { r ->
-            val row = LinearLayout(requireContext()).apply {
+            val row = LinearLayout(ctx).apply {
                 orientation = LinearLayout.HORIZONTAL
                 gravity = Gravity.CENTER_VERTICAL
                 setPadding(0, 6, 0, 6)
             }
             val color = when {
-                r.isIncome -> 0xFF2ecc71.toInt()
-                r.isExpense -> 0xFFe74c3c.toInt()
-                else -> 0xFFd4ac0d.toInt()
+                r.isIncome -> ctx.getColor(R.color.color_income)
+                r.isExpense -> ctx.getColor(R.color.color_expense)
+                else -> ctx.getColor(R.color.color_bank)
             }
             val label = when {
                 r.isIncome -> "수입"
@@ -254,21 +297,25 @@ class HomeFragment : Fragment() {
                 r.type == "interest" -> "이자"
                 else -> "금고"
             }
-            row.addView(TextView(requireContext()).apply {
-                text = label; setTextColor(0xFFFFFFFF.toInt()); setBackgroundColor(color)
-                textSize = 13f; setPadding(6, 2, 6, 2)
+            row.addView(TextView(ctx).apply {
+                text = label
+                setTextColor(Color.WHITE)
+                background = ctx.getDrawable(R.drawable.bg_label_pill)
+                backgroundTintList = ColorStateList.valueOf(color)
+                textSize = 13f
+                setPadding(12, 4, 12, 4)
             })
-            row.addView(TextView(requireContext()).apply {
+            row.addView(TextView(ctx).apply {
                 text = "  ${r.memo}"; textSize = 13f
                 typeface = Typeface.DEFAULT_BOLD
                 layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
             })
-            row.addView(TextView(requireContext()).apply {
+            row.addView(TextView(ctx).apply {
                 text = "${r.amount.formatted()}원"; setTextColor(color)
                 textSize = 13f; typeface = Typeface.DEFAULT_BOLD
             })
             if (r.type != "interest") {
-                row.addView(TextView(requireContext()).apply {
+                row.addView(TextView(ctx).apply {
                     text = "🗑️"; textSize = 16f; setPadding(8, 2, 8, 2)
                     setOnClickListener { db.deleteRecord(r.id); render(); showDetail(dateStr) }
                 })

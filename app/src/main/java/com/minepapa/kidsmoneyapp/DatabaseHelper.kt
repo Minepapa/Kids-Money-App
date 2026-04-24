@@ -189,6 +189,28 @@ class DatabaseHelper(context: Context) :
         return 0
     }
 
+    fun getGoalsForMonth(month: String): List<SavingsGoal> {
+        val list = mutableListOf<SavingsGoal>()
+        readableDatabase.query(
+            "savings_goals", null,
+            "created_date LIKE ?", arrayOf("$month%"),
+            null, null, "purchased ASC, id ASC"
+        ).use {
+            while (it.moveToNext()) {
+                list.add(SavingsGoal(
+                    id = it.getLong(0),
+                    title = it.getString(1),
+                    targetAmount = it.getInt(2),
+                    savedAmount = it.getInt(3),
+                    createdDate = it.getString(4),
+                    completed = it.getInt(5) == 1,
+                    purchased = it.getColumnIndex("purchased").let { col -> if (col >= 0) it.getInt(col) == 1 else false }
+                ))
+            }
+        }
+        return list
+    }
+
     fun deleteGoal(id: Long) {
         writableDatabase.delete("savings_goals", "id=?", arrayOf(id.toString()))
     }
@@ -264,6 +286,15 @@ class DatabaseHelper(context: Context) :
         writableDatabase.update("achievements", values, "id=? AND month=?", arrayOf(id, month))
     }
 
+    fun getLatestUnlockedAchievementId(month: String): String? {
+        readableDatabase.query(
+            "achievements", arrayOf("id"),
+            "month=? AND unlocked_date IS NOT NULL", arrayOf(month),
+            null, null, "unlocked_date DESC", "1"
+        ).use { if (it.moveToFirst()) return it.getString(0) }
+        return null
+    }
+
     // ── Interest ──────────────────────────────────────────────────────────────
 
     fun applyMonthlyInterestIfNeeded(ratePercent: Int, lastInterestMonth: String?): String? {
@@ -278,13 +309,14 @@ class DatabaseHelper(context: Context) :
 
         if (!startMonth.isBefore(currentMonth)) return null
 
+        val monthlyRate = Math.pow(1 + ratePercent / 100.0, 1.0 / 12) - 1
         var month = startMonth
         while (month.isBefore(currentMonth)) {
             val bankBalance = computeBankBalanceUpTo(month.atEndOfMonth())
-            val interest = (bankBalance * ratePercent / 100.0).toInt()
+            val interest = (bankBalance * monthlyRate).toInt()
             if (interest > 0) {
                 val interestDate = month.atEndOfMonth().toString()
-                insertRecord(Record(date = interestDate, type = "interest", memo = "아빠 금고 이자 (월 ${ratePercent}%)", amount = interest))
+                insertRecord(Record(date = interestDate, type = "interest", memo = "아빠 금고 이자 (연 ${ratePercent}%)", amount = interest))
             }
             month = month.plusMonths(1)
         }

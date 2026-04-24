@@ -5,67 +5,40 @@
     android:viewportWidth="56"
     android:viewportHeight="56">
 
-    <!-- Background circle -->
-    <path
-        android:fillColor="#E3EAF8"
+    <path android:fillColor="#E3EAF8"
         android:pathData="M28,2 A26,26 0 1,0 28,54 A26,26 0 1,0 28,2 Z"/>
 
-    <!-- Skin face circle (smaller, radius 14) -->
-    <path
-        android:fillColor="#FFDAB9"
+    <path android:fillColor="#FFDAB9"
         android:pathData="M28,14 A14,14 0 1,0 28,42 A14,14 0 1,0 28,14 Z"/>
 
-    <!-- Hair top -->
-    <path
-        android:fillColor="#5C3317"
+    <path android:fillColor="#5C3317"
         android:pathData="M14,26 A14,14 0 0,1 42,26 L42,18 C38,6 34,12 28,12 C22,12 18,6 14,18 Z"/>
 
-    <!-- Hair left side -->
-    <path
-        android:fillColor="#5C3317"
+    <path android:fillColor="#5C3317"
         android:pathData="M14,26 L14,36 C14,39 18,38 18,35 L18,26 Z"/>
 
-    <!-- Hair right side -->
-    <path
-        android:fillColor="#5C3317"
+    <path android:fillColor="#5C3317"
         android:pathData="M42,26 L42,36 C42,39 38,38 38,35 L38,26 Z"/>
 
-    <!-- Left eye -->
-    <path
-        android:fillColor="#2C1810"
+    <path android:fillColor="#2C1810"
         android:pathData="M22,22.5 A2.5,2.5 0 1,0 22,27.5 A2.5,2.5 0 1,0 22,22.5 Z"/>
 
-    <!-- Right eye -->
-    <path
-        android:fillColor="#2C1810"
+    <path android:fillColor="#2C1810"
         android:pathData="M34,22.5 A2.5,2.5 0 1,0 34,27.5 A2.5,2.5 0 1,0 34,22.5 Z"/>
 
-    <!-- Left eye shine -->
-    <path
-        android:fillColor="#FFFFFF"
+    <path android:fillColor="#FFFFFF"
         android:pathData="M22.8,23.2 A1,1 0 1,0 22.8,25.2 A1,1 0 1,0 22.8,23.2 Z"/>
 
-    <!-- Right eye shine -->
-    <path
-        android:fillColor="#FFFFFF"
+    <path android:fillColor="#FFFFFF"
         android:pathData="M34.8,23.2 A1,1 0 1,0 34.8,25.2 A1,1 0 1,0 34.8,23.2 Z"/>
 
-    <!-- Left cheek blush -->
-    <path
-        android:fillColor="#FFB3A0"
-        android:fillAlpha="0.6"
+    <path android:fillColor="#FFB3A0" android:fillAlpha="0.6"
         android:pathData="M17,31.5 A4,2.5 0 1,0 17,36.5 A4,2.5 0 1,0 17,31.5 Z"/>
 
-    <!-- Right cheek blush -->
-    <path
-        android:fillColor="#FFB3A0"
-        android:fillAlpha="0.6"
+    <path android:fillColor="#FFB3A0" android:fillAlpha="0.6"
         android:pathData="M39,31.5 A4,2.5 0 1,0 39,36.5 A4,2.5 0 1,0 39,31.5 Z"/>
 
-    <!-- Smile -->
-    <path
-        android:strokeColor="#CC5555"
-        android:strokeWidth="2"
+    <path android:strokeColor="#CC5555" android:strokeWidth="2"
         android:fillColor="#00000000"
         android:pathData="M22,35 Q28,40 34,35"/>
 

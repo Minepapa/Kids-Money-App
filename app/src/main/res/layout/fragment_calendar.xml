@@ -1,28 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FDFBFF"
-    android:padding="12dp">
+    android:background="@color/sb_cream">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <!-- 히어로 헤더 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginBottom="6dp">
+            android:background="@drawable/bg_card_hero"
+            android:padding="16dp"
+            android:paddingBottom="16dp"
+            android:gravity="center_vertical">
 
             <Button
                 android:id="@+id/btnPrevMonth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="이전"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+                android:textColor="@color/sb_text_on_dark"
+                android:background="@drawable/bg_button_outline_green"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"/>
 
             <TextView
                 android:id="@+id/tvMonth"
@@ -30,93 +36,134 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textSize="16sp"
-                android:textStyle="bold"/>
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/sb_text_on_dark"/>
 
             <Button
                 android:id="@+id/btnNextMonth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="다음"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+                android:textColor="@color/sb_text_on_dark"
+                android:background="@drawable/bg_button_outline_green"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"/>
 
         </LinearLayout>
 
-        <GridLayout
-            android:id="@+id/calendarGrid"
+        <!-- 달력 그리드 카드 (히어로 오버랩) -->
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:columnCount="7"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="8dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/sb_white">
 
-        <LinearLayout
+            <GridLayout
+                android:id="@+id/calendarGrid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="7"
+                android:padding="4dp"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- 월별 요약 카드 -->
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="#F9F9F9"
-            android:padding="8dp"
-            android:layout_marginBottom="8dp">
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="8dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/sb_white">
 
-            <TextView
-                android:id="@+id/tvMonthInc"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textColor="#2ecc71"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:lineSpacingExtra="4dp"/>
+                android:orientation="horizontal"
+                android:padding="12dp">
 
-            <TextView
-                android:id="@+id/tvMonthExp"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textColor="#e74c3c"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:lineSpacingExtra="4dp"/>
+                <TextView
+                    android:id="@+id/tvMonthInc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/color_income"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:lineSpacingExtra="2dp"/>
 
-            <TextView
-                android:id="@+id/tvMonthBnk"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textColor="#d4ac0d"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:lineSpacingExtra="4dp"/>
+                <TextView
+                    android:id="@+id/tvMonthExp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/color_expense"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:lineSpacingExtra="2dp"/>
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/tvMonthBnk"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/color_bank"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:lineSpacingExtra="2dp"/>
 
-        <LinearLayout
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- 날짜 상세 카드 -->
+        <androidx.cardview.widget.CardView
             android:id="@+id/detailView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="#F0F0F0"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/sb_white"
             android:visibility="gone">
 
-            <TextView
-                android:id="@+id/tvDetailDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="14sp"
-                android:paddingBottom="6dp"/>
-
             <LinearLayout
-                android:id="@+id/llDayList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"/>
+                android:orientation="vertical"
+                android:padding="14dp">
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/tvDetailDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:textColor="@color/sb_text_primary"
+                    android:paddingBottom="8dp"/>
+
+                <LinearLayout
+                    android:id="@+id/llDayList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"/>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 

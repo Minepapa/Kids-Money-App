@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.minepapa.kidsmoneyapp.databinding.DialogAddGoalBinding
 import com.minepapa.kidsmoneyapp.databinding.FragmentGoalsBinding
 import java.time.LocalDate
+import java.time.YearMonth
 
 class GoalsFragment : Fragment() {
 
@@ -73,7 +74,7 @@ class GoalsFragment : Fragment() {
     }
 
     private fun loadGoals() {
-        val goals = db.getAllGoals()
+        val goals = db.getGoalsForMonth(YearMonth.now().toString())
         goalAdapter.update(goals)
         binding.tvNoGoals.visibility = if (goals.isEmpty()) View.VISIBLE else View.GONE
         binding.rvGoals.visibility = if (goals.isEmpty()) View.GONE else View.VISIBLE

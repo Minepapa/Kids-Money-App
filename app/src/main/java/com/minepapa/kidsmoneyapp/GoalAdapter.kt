@@ -17,16 +17,17 @@ class GoalAdapter(
             binding.tvGoalAmount.text = "${goal.targetAmount.formatted()}원"
             binding.tvGoalPurchased.text = if (goal.purchased) "✅" else "🎯"
 
+            val ctx = binding.root.context
             if (goal.purchased) {
                 binding.tvGoalTitle.text = goal.title
                 binding.tvGoalTitle.paintFlags = binding.tvGoalTitle.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                binding.tvGoalTitle.setTextColor(0xFF999999.toInt())
-                binding.tvGoalAmount.setTextColor(0xFF999999.toInt())
+                binding.tvGoalTitle.setTextColor(ctx.getColor(R.color.sb_text_hint))
+                binding.tvGoalAmount.setTextColor(ctx.getColor(R.color.sb_text_hint))
             } else {
                 binding.tvGoalTitle.text = goal.title
                 binding.tvGoalTitle.paintFlags = binding.tvGoalTitle.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
-                binding.tvGoalTitle.setTextColor(0xFF333333.toInt())
-                binding.tvGoalAmount.setTextColor(0xFF666666.toInt())
+                binding.tvGoalTitle.setTextColor(ctx.getColor(R.color.sb_text_primary))
+                binding.tvGoalAmount.setTextColor(ctx.getColor(R.color.sb_text_secondary))
             }
 
             binding.tvGoalPurchased.setOnClickListener { onPurchaseToggle(goal) }

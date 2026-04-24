@@ -101,14 +101,70 @@ object AchievementManager {
 
     fun buildAchievementList(db: DatabaseHelper): List<Achievement> {
         val currentMonth = YearMonth.now().toString()
-        val unlockedIds = db.getUnlockedAchievementIds(currentMonth)
+        val activeIds = computeCurrentlyActiveIds(db, currentMonth)
         val unseenIds = db.getUnseenAchievements(currentMonth).toSet()
         return catalog.map { a ->
-            val isUnlocked = a.id in unlockedIds
             a.copy(
-                unlockedDate = if (isUnlocked) "unlocked" else null,
+                unlockedDate = if (a.id in activeIds) "unlocked" else null,
                 seen = a.id !in unseenIds
             )
         }
+    }
+
+    private fun computeCurrentlyActiveIds(db: DatabaseHelper, currentMonth: String): Set<String> {
+        val active = mutableSetOf<String>()
+        val monthRecords = db.getAllRecords().filter { it.date.startsWith(currentMonth) }
+        val totalCount = monthRecords.size
+
+        if (totalCount >= 1)  active.add("first_record")
+        if (totalCount >= 10) active.add("records_10")
+        if (totalCount >= 20) active.add("records_20")
+        if (totalCount >= 30) active.add("records_30")
+
+        val streak = db.getRecordingStreak()
+        if (streak >= 3)  active.add("streak_3")
+        if (streak >= 7)  active.add("streak_7")
+        if (streak >= 15) active.add("streak_15")
+
+        val monthBank = monthRecords
+            .filter { it.type == "tobank" || it.type == "direct_in" }
+            .sumOf { it.amount }
+        if (monthBank >= 5000)  active.add("saved_5000")
+        if (monthBank >= 10000) active.add("saved_10000")
+        if (monthBank >= 30000) active.add("saved_30000")
+
+        val (bankPrincipal, bankInterest) = db.getBankBalancesBreakdown()
+        if (bankPrincipal + bankInterest >= 50000) active.add("bank_50000")
+
+        val purchasedGoals = db.countPurchasedGoalsInMonth(currentMonth)
+        if (purchasedGoals >= 1) active.add("goal_first")
+        if (purchasedGoals >= 2) active.add("goal_2")
+        if (purchasedGoals >= 3) active.add("goal_3")
+
+        val expenseDatesThisMonth = monthRecords
+            .filter { it.isExpense }
+            .map { it.date }
+            .toSet()
+        val daysInMonth = YearMonth.now().lengthOfMonth()
+        val noExpenseDays = (1..daysInMonth).count { day ->
+            val d = "%s-%02d".format(currentMonth, day)
+            d !in expenseDatesThisMonth
+        }
+        if (noExpenseDays >= 7)  active.add("no_expense_7")
+        if (noExpenseDays >= 14) active.add("no_expense_14")
+
+        val monthIncome = monthRecords.filter { it.type == "income" }.sumOf { it.amount }
+        if (monthIncome >= 50000) active.add("income_record")
+
+        val maxDayIncome = monthRecords.filter { it.type == "income" }
+            .groupBy { it.date }
+            .maxOfOrNull { (_, recs) -> recs.sumOf { it.amount } } ?: 0
+        if (maxDayIncome >= 10000) active.add("big_income")
+
+        val monthInterest = monthRecords.filter { it.type == "interest" }
+        if (monthInterest.isNotEmpty()) active.add("interest_first")
+        if (monthInterest.sumOf { it.amount } >= 1000) active.add("interest_1000")
+
+        return active
     }
 }

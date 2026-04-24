@@ -12,17 +12,19 @@ class BadgeAdapter(
 
     inner class ViewHolder(private val binding: ItemBadgeBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(achievement: Achievement) {
+            val ctx = binding.root.context
             binding.tvBadgeEmoji.text = achievement.emoji
             binding.tvBadgeName.text = achievement.titleKo
             if (achievement.isUnlocked) {
                 binding.root.alpha = 1.0f
-                binding.tvBadgeName.setTextColor(0xFF333333.toInt())
+                binding.root.background = ctx.getDrawable(R.drawable.bg_badge_unlocked)
+                binding.tvBadgeName.setTextColor(ctx.getColor(R.color.sb_text_primary))
             } else {
-                binding.root.alpha = 0.3f
-                binding.tvBadgeName.setTextColor(0xFF999999.toInt())
+                binding.root.alpha = 0.35f
+                binding.root.background = ctx.getDrawable(R.drawable.bg_card_white)
+                binding.tvBadgeName.setTextColor(ctx.getColor(R.color.sb_text_hint))
             }
 
-            // 길게 누르면 획득 조건 설명 표시
             binding.root.setOnLongClickListener {
                 AlertDialog.Builder(it.context)
                     .setTitle("${achievement.emoji} ${achievement.titleKo}")
