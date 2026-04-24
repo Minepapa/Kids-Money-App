@@ -189,6 +189,28 @@ class DatabaseHelper(context: Context) :
         return 0
     }
 
+    fun getGoalsForMonth(month: String): List<SavingsGoal> {
+        val list = mutableListOf<SavingsGoal>()
+        readableDatabase.query(
+            "savings_goals", null,
+            "created_date LIKE ?", arrayOf("$month%"),
+            null, null, "purchased ASC, id ASC"
+        ).use {
+            while (it.moveToNext()) {
+                list.add(SavingsGoal(
+                    id = it.getLong(0),
+                    title = it.getString(1),
+                    targetAmount = it.getInt(2),
+                    savedAmount = it.getInt(3),
+                    createdDate = it.getString(4),
+                    completed = it.getInt(5) == 1,
+                    purchased = it.getColumnIndex("purchased").let { col -> if (col >= 0) it.getInt(col) == 1 else false }
+                ))
+            }
+        }
+        return list
+    }
+
     fun deleteGoal(id: Long) {
         writableDatabase.delete("savings_goals", "id=?", arrayOf(id.toString()))
     }

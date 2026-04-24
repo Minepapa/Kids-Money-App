@@ -21,6 +21,7 @@ class CalendarFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var db: DatabaseHelper
     private var viewDate: YearMonth = YearMonth.now()
+    private var selectedDate: String = LocalDate.now().toString()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentCalendarBinding.inflate(inflater, container, false)
@@ -112,9 +113,9 @@ class CalendarFragment : Fragment() {
             val ctx = requireContext()
             val cell = LinearLayout(ctx).apply {
                 orientation = LinearLayout.VERTICAL
-                setPadding(2, 2, 2, 2)
+                setPadding(4, 6, 4, 2)
                 background = ctx.getDrawable(
-                    if (dStr == today) R.drawable.bg_calendar_cell_today
+                    if (dStr == selectedDate) R.drawable.bg_calendar_cell_today
                     else R.drawable.bg_calendar_cell_normal
                 )
                 layoutParams = GridLayout.LayoutParams().apply {
@@ -123,7 +124,11 @@ class CalendarFragment : Fragment() {
                     columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f)
                     setMargins(1, 1, 1, 1)
                 }
-                setOnClickListener { showDetail(dStr) }
+                setOnClickListener {
+                    selectedDate = dStr
+                    buildCalendar()
+                    showDetail(dStr)
+                }
             }
 
             cell.addView(TextView(ctx).apply {
